@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>  
+    div.padded {  
+      padding-top: 0px;  
+      padding-right: 100px;  
+      padding-bottom: 0.25in;  
+      padding-left: 100px;  
+    }  
+  </style> 
+<title>Your Name  |  CS 184</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<br />
+<h1 align="middle">Assignment 3-2: Additional Features to PathTracer</h1>
+    <h2 align="middle">Anthony Zhang and Andrew Huang</h2>
+    <h2 align="middle">https://antoniomacaronio.github.io/proj-webpage-template/proj3-2/index.html</h2>
+
+    <div class="padded">
+
+        
+        * NOTE: For this project, you will choose TWO out of the four given parts to complete. One of those parts must be Part 1 or Part 2. In other words, you can choose any combination of two parts except the pair (Part 3, Part 4).
+        <h3 align="middle">Overview</h3>
+        <p>
+            In this project, we added more features to our raytracer from 3-1. Specifically, this included the implementation of refraction and reflection BSDFs to support both specular and diffuse reflection; with this, we were able to model and render glass materials. Then, we added support for a microfacet model to render rough surfaces such as metallic ones, which included gold, copper, and aluminum. By computing the proper distribution functions and correct refraction index calculations, we were able to create a model that is quite realistic!
+        </p>
+
+        <h3 align="middle">Part 1. Mirror and Glass Materials</h3>
+
+        <p><b>
+            Show a sequence of six images of scene `CBspheres.dae` rendered with `max_ray_depth` set to 0, 1, 2, 3, 4, 5, and 100. The other settings should be at least 64 samples per pixel and 4 samples per light. Make sure to include all screenshots.
+        </b></p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="3-2part1image1.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 0</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part1image2.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 1</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="3-2part1image3.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 2</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part1image4.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 3</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="3-2part1image5.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 4</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part1image6.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 5</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="3-2part1image7.png" align="middle" width="400px"/>
+                        <figcaption>max_depth = 100</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+        <p><b>
+            Point out the new multibounce effects that appear in each image. 
+        </b></p>
+        <p>
+            In the first image, the only radiance rendered is directly from the light source.
+
+            In the second image, there is also light bouncing off the walls, floor, and reflection on the spheres.
+
+            In the third image, all light rays reflected off the left sphere are now rendered.
+
+            In the fourth image, all light rays refracting through the right sphere are now rendered.
+
+            In the fifth image, the reflection of the right sphere in the left sphere is now rendered.
+
+            In the sixth image, the scene is brighter.
+
+            In the seventh image, the scene is just slightly brighter.
+        </p>
+        <br>
+        <p><b>
+            Explain how these bounce numbers relate to the particular effects that appear. Make sure to include all screenshots.
+        </b></p>
+        <p>
+            In the first image, there is only zero-bounce illumination, which means that the only radiance the camera receives is directly from the light source, as those light rays have not touched any part of the scene.
+
+            In the second image, we also include one-bounce illumination. Here we can see (receive radiance) from the walls and floors of the scene as the lights will emit rays that bounce once off these surfaces and then into the camera. Additionally, we can see some light getting reflected off the surface of the spheres in our scene as well, which is also one bounce.
+
+            In the third image, we are now including two-bounce illumination. Here the left sphere comes to life, as any ray the light emits can now bounce off the wall and to the sphere, then off the sphere and to the camera are now rendered. A similar story is true for the sphere on the right, which is made up of glass; however, only on the edges of the sphere is this reflective nature visible. Everywhere else is not as reflective, and this is due to the Fresnel equations, which state that as the angle of reflection becomes sharper, the surface becomes more reflective. Thus, as we move away from the edges of the sphere, the glass becomes more refractive, and this means that the rays passing through these parts of the sphere will not be rendered as they exhibit more than 2 bounces. We can also see that the walls are brighter, as light can bounce between two walls before going to the camera, and this also applies to the ceiling and the floor.
+
+            In the fourth image, we are now including three-bounce illumination. Now, the right sphere comes alive, because for light to pass through the sphere, it needs to pass through it twice (2 bounces): one bounce to go inside the sphere and the second to exit the sphere and go to the camera. Because we have three-bounces, radiance emitted from the light can hit a wall, and then pass through the sphere and enter the camera, which is why we can see the sphere refracting parts of the wall, ceiling, and floor. Additionally, we can also see bright light spots on where the sphere is sitting, which is due to the fact that this is radiance which passes through the sphere and then bounces off the ground, and then into the camera. This light is brighter because when it’s passing through glass, not much radiance is lost as glass is very transparent, and the floor absorbs/scatters some radiance, meaning much of it is kept as the light travels towards the camera. Also, notice in the left sphere, that the reflection of the right sphere on the left sphere is now blue! To trace this, we must have a ray from the light bounce off the blue wall (1 bounce), refract through the right sphere (2 bounces), and then bounce off the left sphere into the camera (1 bounce), which is a total of 4 bounces.
+
+            In the fifth image, we are now including four-bounce illumination. We don’t really see much of a difference here other than an overall brighter render because at this point, the number of bounces doesn’t really show any new parts of the scene that were not rendered previously because all the properties of the glass sphere on the right were already visible. There are some extra bounce paths rays from the light source can take, but the amount of radiance these rays carry is minimal since they have bounced around many times.
+
+            In the sixth image, we are now including five-bounce illumination. Like the previous part, there is not much change to be seen. The image is a little brighter but as with the aforementioned reasoning, the new light ray paths this render adds all carry a minimal amount of radiance.
+
+            In the seventh image, we are including all bounces up to 100 in our illumination. We can see that the overall amount of radiance in our scene has converged and there is not even much of a difference even to the sharpest high in terms of scene brightness. This convergence is nice because we don’t have to render an infinite amount of bounces for a realistic scene, this approximation does a great job already.
+        </p>
+        <br>
+
+
+        <h3 align="middle">Part 2. Microfacet Material</h3>
+        <p><b>
+            Show a screenshot sequence of 4 images of scene `CBdragon_microfacet_au.dae` rendered with $\alpha$ set to 0.005, 0.05, 0.25 and 0.5. The other settings should be at least 128 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Describe the differences between different images. Note that, to change the $\alpha$, just open the .dae file and search for `microfacet`.
+        </b></p>
+
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="3-2part2image1.png" align="middle" width="400px"/>
+                        <figcaption>alpha = 0.005</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part2image2.png" align="middle" width="400px"/>
+                        <figcaption>alpha = 0.05</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="3-2part2image3.png" align="middle" width="400px"/>
+                        <figcaption>alpha = 0.25</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part2image4.png" align="middle" width="400px"/>
+                        <figcaption>alpha = 0.5</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+            We can see with the lower alpha values, the surface is more reflective. Especially with the 0.005 dragon, there is even an absence of light in some spots as the dragon because there is little radiance that can bounce in such a way. With 0.05 dragon, the gold color is more pronounced, but the surface is still quite reflective, as one can notice the red color from the left wall and the blue color on the right wall bouncing into the camera. The 0.25 dragon has a huge difference in how much gold color is pronounced. What’s happening is that the surface is becoming more and more diffused instead of the original specular reflection, so the light returned is more and more scattered, which is very visible here. It is a lot less glossy and more of a matte style render. The 0.5 dragon exhibits this even further - notice how the red wall on the left and blue wall on the right are not bouncing off the dragon as much, and the matte gold color has these colors more as a hue, rather than a reflection.
+        </p>
+        <br>
+        <p><b>
+            Show two images of scene `CBbunny_microfacet_cu.dae` rendered using cosine hemisphere sampling (default) and your importance sampling. The sampling rate should be fixed at 64 samples per pixel and 1 samples per light. The number of bounces should be at least 5. Briefly discuss their difference.
+        </b></p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="3-2part2image5.png" align="middle" width="400px"/>
+                        <figcaption>Hemisphere Sampling</figcaption>
+                    </td>
+                    <td>
+                        <img src="3-2part2image6.png" align="middle" width="400px"/>
+                        <figcaption>Importance Sampling</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+            Importance sampling looks so much better than the hemisphere sampling, which exhibits a lot of noise, dark spots with no radiance, and generally lower image quality. We see that because the importance sampling method is sampling rays from the light directly, it will always retrieve some radiance to be rendered. The hemisphere sampling is random, and therefore sometimes the ray returned by the probability distribution carries no radiance, leading to all these blacked-out spots.
+        </p>
+        <br>
+        <p><b>
+            Show at least one image with some other conductor material, replacing `eta` and `k`. Note that you should look up values for real data rather than modifying them arbitrarily. Tell us what kind of material your parameters correspond to. 
+        </b></p>
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="3-2part2image7.png" align="middle" width="400px"/>
+                        <figcaption>Aluminum Dragon</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+            These parameters correspond to an aluminum dragon!
+        </p>
+        <br>
+        <h3 align="middle">Collab</h3>
+        <p>
+            We again used Live-Share, which was a great powerful extension since Andrew couldn’t get his Clion to properly build the project (some error with staff binaries and arm64 m1 mac). Doing this avoided the problem as we could just build on my intel-based macbook and it allowed us to communicate with each other in real time as we wrote code!
+        </p>
+        
+        
+
+
+    </div>
+</body>
+</html>
+
