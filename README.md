@@ -1,6 +1,6 @@
-# CS184 Project Webpage Repo
+# CS180 Project Webpage Repo
 
-The goal of this repo is to provide a template from which students can host CS184 project writeups. 
+The goal of this repo is to provide a template from which students can host CS180 project writeups. CS180 is UC Berkeley's Introduction to Computer Vision and Computational Photography class. 
 
 ## Enabling Github Pages
 
@@ -8,4 +8,4 @@ To enable Github pages, go to the 'Settings' tab then click on 'Pages'. Under 'S
 
 ## Adding Project Webpages
 
-There are 5 folders, one for each project. Each contains an index.html file. When the links from the mainpage are clicked, these files will be loaded, so edit these to add your project webpages.
+There are 6 folders, one for each project. Each contains an index.html file. 
