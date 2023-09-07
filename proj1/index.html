@@ -33,12 +33,16 @@
 
 <h2 align="middle">Overview and Explanation</h2>
 <p> In this project, I implemented an image aligner to take three R, G, and B channels of an image (which on their own are gray) and align them into a single, colored image. 
+    <br>
     For small images, a simple exhaustive search over -15,15 for the x and y coordinates was enough to produce great results. The metric used to align the images was to select the alignment with the least sum of squared differences result. 
+    <br>
     For larger images, we need to search over more pixels but more efficiently. From a suggestion in office hours, I used an image pyramid where each layer was a downscaled version of the previous layer, and anti-aliasing was also applied to produce nicer looking images. The pyramid was built until the smallest image was 400 pixels on each dimension.
     Then, the simple alignment was performed on the smallest image, then the shifts were used as a starting point for the next bigger layer, and these changes continued propogating up to the final original size of the image.
+    <br>
     I ran into many issues when the alignment was off, and there were 3 crucial changes that helped generate great looking alignments. The first was when I cropped 5% off each edge of the image. 
     The second was using the similarity between green and blue. Instead of aligning red to blue and green to blue, I aligned red to green and green to blue (then I took green's shift and added it to red); in other words, red got shifted to green, green got shifted to blue, and then red got shifted to blue.
     The third was alternating np.roll - instead of wrapping the image back around any time it got shifted, instead the new values were set to white.
+    <br>
     This helped generate great results as seen below.
 
 </p>
