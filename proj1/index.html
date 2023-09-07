@@ -23,7 +23,7 @@
 
 <body>
 
-<h1 align="middle">CS 184: Intro to Computer Vision and Computational Photography, Fall 2023</h1>
+<h1 align="middle">CS 180: Intro to Computer Vision and Computational Photography, Fa2023</h1>
 <h1 align="middle">Project 1: Colorizing the Prokudin-Gorskii Photo Collection</h1>
 <h2 align="middle">ANTHONY ZHANG, 3036218223</h2>
 
@@ -33,22 +33,22 @@
 
 <h2 align="middle">Overview and Explanation</h2>
 <p> In this project, I implemented an image aligner to take three R, G, and B channels of an image (which on their own are gray) and align them into a single, colored image. 
-    <br>
+    <br><br>
     For small images, a simple exhaustive search over -15,15 for the x and y coordinates was enough to produce great results. The metric used to align the images was to select the alignment with the least sum of squared differences result. 
-    <br>
+    <br><br>
     For larger images, we need to search over more pixels but more efficiently. From a suggestion in office hours, I used an image pyramid where each layer was a downscaled version of the previous layer, and anti-aliasing was also applied to produce nicer looking images. The pyramid was built until the smallest image was 400 pixels on each dimension.
     Then, the simple alignment was performed on the smallest image, then the shifts were used as a starting point for the next bigger layer, and these changes continued propogating up to the final original size of the image.
-    <br>
+    <br><br>
     I ran into many issues when the alignment was off, and there were 3 crucial changes that helped generate great looking alignments. The first was when I cropped 5% off each edge of the image. 
     The second was using the similarity between green and blue. Instead of aligning red to blue and green to blue, I aligned red to green and green to blue (then I took green's shift and added it to red); in other words, red got shifted to green, green got shifted to blue, and then red got shifted to blue.
     The third was alternating np.roll - instead of wrapping the image back around any time it got shifted, instead the new values were set to white.
-    <br>
+    <br><br>
     This helped generate great results as seen below.
 
 </p>
 
 
-<h3 align="middle">Results</h3>
+<h3 align="middle">Results for Given Dataset Images</h3>
 <p>
     Here are the results for the Prokudin-Gorskii photo collection! The caption denotes the shift the algorithm applied to the red and green channels to line it up with the blue.
 </p>
@@ -135,6 +135,30 @@
     </table>
   </div>
 
-
+<h3 align="middle">Some of my Own Images! :D</h3>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/zakat1.jpg" align="middle" width="450px"/>
+              <figcaption align="middle">Red Shift = (-67, 113), Green Shift = (-41, 75)</figcaption>
+            </td>
+            <td>
+              <img src="images/zakat2.jpg" align="middle" width="450px"/>
+              <figcaption align="middle">Red Shift = (-20, 144), Green Shift = (-16, 56)</figcaption>
+            </td>
+            <br>
+            <td>
+                <img src="images/piony1.jpg" align="middle" width="450px"/>
+                <figcaption align="middle">Red Shift = (30, 156), Green Shift = (20, 75)</figcaption>
+              </td>
+              <td>
+                <img src="images/piony2.jpg" align="middle" width="450px"/>
+                <figcaption align="middle">Red Shift = (-5, 105), Green Shift = (3, 51)</figcaption>
+              </td>
+              <br>
+          </tr>
+    </table>
+</div>
 </body>
 </html>
