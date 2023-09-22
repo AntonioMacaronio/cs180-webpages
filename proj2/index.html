@@ -1,495 +1,146 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <style>
-        body {
-            background-color: white;
-            padding: 100px;
-            width: 1000px;
-            margin: auto;
-            text-align: left;
-            font-weight: 300;
-            font-family: 'Open Sans', sans-serif;
-            color: #121212;
-        }
-        h1, h2, h3, h4 {
-            font-family: 'Source Sans Pro', sans-serif;
-        }
-        kbd {
-            color: #121212;
-        }
-    </style>
-    <title>CS 184 Mesh Edit</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
-
-    <script>
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
-            }
-        };
-    </script>
-    <script id="MathJax-script" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-    </script>
-
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180: Fun with Filters and Frequencies!</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 </head>
 
 
 <body>
 
-<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
-<h1 align="middle">Project 2: Mesh Edit</h1>
-<h2 align="middle">Anthony Zhang + Andrew Huang</h2>
+<h1 align="middle">CS 180: Intro to Computer Vision and Computational Photography, Fa2023</h1>
+<h1 align="middle">Project 2: Fun with Filters and Frequencies</h1>
+<h2 align="middle">ANTHONY ZHANG, 3036218223</h2>
 
 <br><br>
 
 <div>
 
-    <h2 align="middle">Overview</h2>
-    <p>
-        In this project, we implemented Bezier curve and surface calculations with de Casteljau's algorithm. Additonally, we implemented some area-weighted vertex normal calculations for Phong shading, edge flipping and splitting for mesh upsampling, which allows us to convert a rough polygon surface to one that looks more fine, accurate, and of higher image quality, which these methods allowed to create higher quality and higher resolution meshes.
-    </p>
-    <br>
+<h2 align="middle">Question 1.1</h2>
+<p> 
+    For this question, we estimated the gradients of the image function by using a specific D_x and D_y filter. Here are the results, along with the gradient magnitude and binarized threshold to increase contrast (the threshold value was 0.21).
+</p>    
+  <div align="middle">
+    <table style="width=100%">
+      <tr>
+        <td>
+          <img src="images/1_1_1.png" align="middle" width="450px"/>
+          <figcaption align="middle">Original Cameraman</figcaption>
+        </td>
+        <td>
+          <img src="images/1_1_2.png" align="middle" width="450px"/>
+          <figcaption align="middle">D_X</figcaption>
+        </td>
+      </tr>
+      <br>
+      <tr>
+        <td>
+          <img src="images/1_1_3.png" align="middle" width="450px"/>
+          <figcaption align="middle">D_Y</figcaption>
+        </td>
+        <td>
+            <img src="images/1_1_4.png" align="middle" width="450px"/>
+            <figcaption align="middle">Gradient Magnitude</figcaption>
+        </td>
+      </tr>
+      <br>
+      <tr>
+        <td>
+          <img src="images/1_1_5.png" align="middle" width="450px"/>
+          <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.21</figcaption>
+        </td>
+      </tr>
+      
+    </table>
+  </div>
 
-
-    <h2 align="middle">Section I: Bezier Curves and Surfaces</h2>
-
-    <h3 align="middle">Part 1: Bezier Curves with 1D de Casteljau Subdivision</h3>
-
-
-    <b>
-        Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
-    </b>
-    <p>
-        De Casteljau's algorithm is this recursive algorithm where given n points, you call a lerp function, which returns n-1 points based on a parameter t. You continually do this until you get just 1 point. Now as you vary t from 0 to 1, it will trace out the Bezier curve!
-    </p>
-    <br>
-
-
-    <b>
-        Take a look at the provided .bzc files and create your own Bezier curve with 6 control points of your choosing. Use this Bezier curve for your screenshots below.
-    </b>
-    <p>
-        YOUR RESPONSE GOES HERE
-    </p>
-    <!-- Example of including a single figure -->
+  <h2 align="middle">Question 1.2</h2>
+    <p> 
+        Now, let's apply a Gaussian filter to the image before using a D_x and D_y convolutions. The first 5 images here are done the slow way, where we apply one gaussian filter to cameraman, and then the gradient filters.
+    </p>    
     <div align="middle">
-        <img src="part1image0.png" align="middle" width="50%">
+      <table style="width=100%">
+        <tr>
+          <td>
+            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+            <figcaption align="middle">Original Cameraman</figcaption>
+          </td>
+          <td>
+            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+            <figcaption align="middle">D_X</figcaption>
+          </td>
+        </tr>
+        <br>
+        <tr>
+          <td>
+            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+            <figcaption align="middle">D_Y</figcaption>
+          </td>
+          <td>
+              <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+              <figcaption align="middle">Gradient Magnitude</figcaption>
+          </td>
+        </tr>
+        <br>
+        <tr>
+          <td>
+            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+            <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.03</figcaption>
+          </td>
+        </tr>
+      </table>
     </div>
-    <br>
 
-    <b>
-        Show screenshots of each step / level of the evaluation from the original control points down to the final evaluated point. Press <kbd>E</kbd> to step through. Toggle <kbd>C</kbd> to show the completed Bezier curve as well.
-    </b>
-    <!-- Example of including multiple figures -->
+    <p> 
+        These next 5 images are done the quick way, where we convolve the gaussian filter with the gradient filter, and then convolve that result with the original camerman image, as convolutions are associative. We can see that the same results emerge!
+    </p>
+
     <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part1image1.png" align="middle" width="400px"/>
-                    <figcaption>Level 0</figcaption>
-                </td>
-                <td>
-                    <img src="part1image2.png" align="middle" width="400px"/>
-                    <figcaption>Level 1</figcaption>
-                </td>
-            </tr>
-            <br>
-            <tr align="center">
-                <td>
-                    <img src="part1image3.png" align="middle" width="400px"/>
-                    <figcaption>Level 2</figcaption>
-                </td>
-                <td>
-                    <img src="part1image4.png" align="middle" width="400px"/>
-                    <figcaption>Level 3</figcaption>
-                </td>
-            </tr>
-            <br>
-            <tr align="center">
-                <td>
-                    <img src="part1image5.png" align="middle" width="400px"/>
-                    <figcaption>Level 4</figcaption>
-                </td>
-                <td>
-                    <img src="part1image6.png" align="middle" width="400px"/>
-                    <figcaption>Level 5</figcaption>
-                </td>
-            </tr>
-            <br>
-            <tr align="center">
-                <td>
-                    <img src="part1image7.png" align="middle" width="400px"/>
-                    <figcaption>Bezier Curve with Interpolated Points</figcaption>
-                </td>
-                <td>
-                    <img src="part1image8.png" align="middle" width="400px"/>
-                    <figcaption>Varying \(t\) value</figcaption>
-                </td>
-            </tr>
+        <table style="width=100%">
+          <tr>
+            <td>
+              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
+              <figcaption align="middle">Original Cameraman</figcaption>
+            </td>
+            <td>
+              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
+              <figcaption align="middle">D_X</figcaption>
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <td>
+              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
+              <figcaption align="middle">D_Y</figcaption>
+            </td>
+            <td>
+                <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
+                <figcaption align="middle">Gradient Magnitude</figcaption>
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <td>
+              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
+              <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.03</figcaption>
+            </td>
+          </tr>
         </table>
-    </div>
-    <br>
-
-
-    <b>
-        Show a screenshot of a slightly different Bezier curve by moving the original control points around and modifying the parameter \(t\) via mouse scrolling.
-    </b>
-    <p>
-        Modified Bezier curve with different \(t\) value:
-    </p>
-    <div align="middle">
-        <img src="part1image9.png" align="middle" width="50%">
-    </div>
-    <br>
-
-
-    <h3 align="middle">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
-    <b>
-        Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
-    </b>
-    <p>
-        Bezier surfaces are 2 dimensional versions of Bezier curve, which means we can use de Casteljau's algorithm to generate Bezier surfaces. Given a grid of points, we can generate a Bezier curve for each row. Then for each of those curves, we can select a select a point along that curve with parameter u. We then run de Casteljau's algorithm again on these new points we’ve obtained, and can generate a final curve with parameter v. In the end, this generates the final surface as we vary u and v.
-    </p>
-    <br>
-
-
-    <b>
-        Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
-    </b>
-    <p>
-        Here is our teapot:
-    </p>
-    <div align="middle">
-        <img src="part2image1.png" align="middle" width="50%">
-    </div>
-    <br>
-    <br>
-
-
-    <h2 align="middle">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
-
-    <h3 align="middle">Part 3: Area-Weighted Vertex Normals</h3>
-
-    <b>
-        Briefly explain how you implemented the area-weighted vertex normals.
-    </b>
-    <p>
-        To find the area-weighted normal of a vertex, we first iterated through the triangles that share this vertex by using h->twin()->next(). Within each triangle, we found its vertices just by calling next() along the half edge. Once we had the vertices of the triangle, we were easily able to to calculate the the norm vector by using the cross-product, which outputs a vector perpendicular to the triangle with magnitude equal to the doubled area of the triangle. Then, we simply added all these vectors together to get the area-weighted norm of the vertex.
-    </p>
-    <br>
-
-
-    <b>
-        Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
-    </b>
-    <p>
-        Here are the screenshots with and without vertex normals:
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="HW 2 Task 3 Diagram 1.png" align="middle" width="400px"/>
-                    <figcaption>Without Vertex Normal</figcaption>
-                </td>
-                <td>
-                    <img src="HW 2 Task 3 Diagram 2.png" align="middle" width="400px"/>
-                    <figcaption>With Vertex Normal</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <h3 align="middle">Part 4: Edge Flip</h3>
-    <b>
-        Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
-    </b>
-    <p>
-        In this section, we implemented flipEdge. To do so, we did a bunch of pointer changes. In particular, we needed to actually flip the edge, which changed which edges belonged to what face, so we assigned this early. Then, we carefully assigned all of the other points, including edge, half-edge and vertex pointers, next, saving the e0->halfedge() and e0->halfedge()->twin() reassignments for last to ensure that we could correctly point to edges correctly.
-    </p>
-    <br>
-
-
-    <b>
-        Show screenshots of the teapot before and after some edge flips.
-    </b>
-    <p>
-        Here is our teapot before and after some edge flips:
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="HW 2 Task 4 Diagram 1.png" align="middle" width="400px"/>
-                    <figcaption>Before</figcaption>
-                </td>
-                <td>
-                    <img src="HW 2 Task 4 Diagram 2.png" align="middle" width="400px"/>
-                    <figcaption>After</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <b>
-        Write about your eventful debugging journey, if you have experienced one.
-    </b>
-    <p>
-        We briefly had a hiccup where our face would disappear, but we realized pretty quickly that it was due to stray twin() calls. Due to our careful planning ahead of time, this was our only bug and we got desired results afterwards. The bug is pictured below:
-    </p>
-    <div align="middle">
-        <img src="HW 2 Task 4 Diagram 3.png" align="middle" width="50%">
-    </div>
-    <br>
-
-
-    <h3 align="middle">Part 5: Edge Split</h3>
-    <b>
-        Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
-    </b>
-    <p>
-        In this section, we implemented edgeSplit. This required a bunch more objects: 12, in fact, so we made sure to create them early on. Then, we first assigned the face half edges to the outer edges (that weren’t split) as they are the most constant. Next, we assigned the half-edges corresponding to the split. Lastly, we finished by assigning a few outer-halfedge pointers, as well as the original split edge. Drawing a picture here with images and what half edges corresponded to what vertices was super helpful and reduced debugging time drastically. Indeed, our only bug was in an if statement regarding the boundary, which occurred in the extra credit (which we did implement). To do that, another picture was in store, as we had to be super careful: we created a new half-edge that was part of the boundary, for example. The extra credit images are from beetle.dae.
-        (Note that we only provide three screenshots of non-extra credit material because the “before” picture is the same for both)
-    </p>
-    <br>
-
-
-    <b>
-        Show screenshots of a mesh before and after some edge splits.
-    </b>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="HW 2 Task 5 Diagram 1.png" align="middle" width="400px"/>
-                    <figcaption>Before</figcaption>
-                </td>
-                <td>
-                    <img src="HW 2 Task 5 Diagram 2.png" align="middle" width="400px"/>
-                    <figcaption>After</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <b>
-        Show screenshots of a mesh before and after a combination of both edge splits and edge flips.
-    </b>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="HW 2 Task 5 Diagram 1.png" align="middle" width="400px"/>
-                    <figcaption>Before</figcaption>
-                </td>
-                <td>
-                    <img src="HW 2 Task 5 Diagram 3.png" align="middle" width="400px"/>
-                    <figcaption>After</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <b>
-        Write about your eventful debugging journey, if you have experienced one.
-    </b>
-    <p>
-        Indeed, our only bug was in an if statement regarding the boundary, which occurred in the extra credit (which we did implement). To do that, another picture was in store, as we had to be super careful: we created a new half-edge that was part of the boundary, for example. The extra credit images are from beetle.dae.
-        (Note that we only provide three screenshots of non-extra credit material because the “before” picture is the same for both)
-    </p>
-    <br>
-
-
-    <b>
-        If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
-    </b>
-    <p>
-        Here is the extra credit for boundary handling:
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part5ec1.png" align="middle" width="400px"/>
-                    <figcaption>Example 1</figcaption>
-                </td>
-                <td>
-                    <img src="part5ec2.png" align="middle" width="400px"/>
-                    <figcaption>Example 2</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
-    <b>
-        Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
-    </b>
-    <p>
-        For part 6, we brought it all together. We followed the suggested strategy of first computing the new positions, then splitting all of the edges (choosing edges to split by the condition that both of the vertices must be old, which was very helpful as it didn’t overload isNew, fixing a bug of ours) and then flipping edges that have one old and one new vertex, before finally reassigning the vertices to their correct positions. 
-    </p>
-    <br>
-
-
-    <b>
-        Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
-    </b>
-
-    <p>
-        Here are some screenshots of the torus. It starts off with very sharp edges and corners, but as we upsample, we can see that the extremely sharp interior is smoothed out. Before it looks like it could give someone a papercut if they stuck their finger inside it, but afterwards it looks like a ring someone can comfortably wear. You can definitely reduce this effect by pre-splitting edges because pre-spliting edges will generate more triangles in that area, which leads to a much less-jagged mesh and overall smoother surface appearance.
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part6image01.png" align="middle" width="400px"/>
-                    <figcaption>Sharp Hexagon Shape?</figcaption>
-                </td>
-                <td>
-                    <img src="part6image02.png" align="middle" width="400px"/>
-                    <figcaption>After 1 upsample: Sharp and rigid corners/edges are smoother</figcaption>
-                </td>
-            </tr>
-            <tr align="center">
-                <td>
-                    <img src="part6image03.png" align="middle" width="400px"/>
-                    <figcaption>After 2 upsamples: Even more smooth, but an asymmetrical shape is still noticeable.</figcaption>
-                </td>
-                <td>
-                    <img src="part6image04.png" align="middle" width="400px"/>
-                    <figcaption>After 3 upsamples: Very smooth, like a strange golf ball</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-
-    <br>
-
-
-    <b>
-        Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
-    </b>
-    <p>
-        Yes, you can definitely pre-process the cube with edge splits and flips so that it divides symmetrically. This happens similar to the reasoning aforementioned - by flipping properly, we can have all edges connect to the vertices symmetrically, which means that every vertex has a similar degree (number of edges it connects to), which allows an even number of triangles to be generated there. A similar effect happens with edge splitting - by having each face of the cube start with the same number of edges, we can ensure that the number of new triangles added is evenly distributed about the surface of the original cube, which makes for symmetrical upsampling. This is pictured below, where we upsample the cube without preprocessing and then with preprocessing.
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part6image11.png" align="middle" width="400px"/>
-                    <figcaption>Cube with sharp corners</figcaption>
-                </td>
-                <td>
-                    <img src="part6image12.png" align="middle" width="400px"/>
-                    <figcaption>After 1 upsample: Sharp and rigid corners/edges are smoother</figcaption>
-                </td>
-            </tr>
-            <tr align="center">
-                <td>
-                    <img src="part6image13.png" align="middle" width="400px"/>
-                    <figcaption>After 2 upsamples: Even more smooth, but an asymmetrical shape is still noticeable.</figcaption>
-                </td>
-                <td>
-                    <img src="part6image14.png" align="middle" width="400px"/>
-                    <figcaption>After 3 upsamples: Very smooth, like a strange golf ball</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <p>
-        Here shows the preprocessed cube with a few edge flips and splits which allows it to upsample symmetrically.
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part6image21.png" align="middle" width="400px"/>
-                    <figcaption>Cube with preprocessed flips</figcaption>
-                </td>
-                <td>
-                    <img src="part6image22.png" align="middle" width="400px"/>
-                    <figcaption>After 1 upsample</figcaption>
-                </td>
-            </tr>
-            <tr align="center">
-                <td>
-                    <img src="part6image23.png" align="middle" width="400px"/>
-                    <figcaption>After 2 upsamples</figcaption>
-                </td>
-                <td>
-                    <img src="part6image24.png" align="middle" width="400px"/>
-                    <figcaption>After 3 upsamples</figcaption>
-                </td>
-            </tr>
-            <tr align="center">
-                <td>
-                    <img src="part6image25.png" align="middle" width="400px"/>
-                    <figcaption>Another POV - the cube is this symmetrical hexagon shape.</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-    <br>
-
-
-    <b>
-        If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
-    </b>
-    <p>
-        We also were able to expand upon our EC from Part 5 to account for boundaries in part 6, as seen by the beetle.dae upscaling. In the process, we had to make sure that we were careful while calculating the new positions of the edges on the boundaries: the new vertices normally take into account the two faces surrounding the corresponding edge, but in this case, there is only one face. For this, we had to use a modified scaling system.
-    </p>
-    <div align="middle">
-        <table style="width:100%">
-            <tr align="center">
-                <td>
-                    <img src="part6ec1.png" align="middle" width="400px"/>
-                    <figcaption>Before (1st POV)</figcaption>
-                </td>
-                <td>
-                    <img src="part6ec2.png" align="middle" width="400px"/>
-                    <figcaption>After (1st POV)</figcaption>
-                </td>
-            </tr>
-            <tr align="center">
-                <td>
-                    <img src="part6ec3.png" align="middle" width="400px"/>
-                    <figcaption>Before (2nd POV)</figcaption>
-                </td>
-                <td>
-                    <img src="part6ec4.png" align="middle" width="400px"/>
-                    <figcaption>After (2nd POV)</figcaption>
-                </td>
-            </tr>
-            <br>
-        </table>
-    </div>
-
-    <br>
-    <br>
-    <p>
-        https://antoniomacaronio.github.io/proj-webpage-template/proj2/index.html
-    </p>
-
+      </div>
 </body>
 </html>
