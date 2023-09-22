@@ -35,112 +35,222 @@
 <p> 
     For this question, we estimated the gradients of the image function by using a specific D_x and D_y filter. Here are the results, along with the gradient magnitude and binarized threshold to increase contrast (the threshold value was 0.21).
 </p>    
-  <div align="middle">
+<div align="middle">
     <table style="width=100%">
-      <tr>
+    <tr>
         <td>
-          <img src="images/1_1_1.png" align="middle" width="450px"/>
-          <figcaption align="middle">Original Cameraman</figcaption>
+        <img src="images/1_1_1.png" align="middle" width="450px"/>
+        <figcaption align="middle">Original Cameraman</figcaption>
         </td>
         <td>
-          <img src="images/1_1_2.png" align="middle" width="450px"/>
-          <figcaption align="middle">D_X</figcaption>
+        <img src="images/1_1_2.png" align="middle" width="450px"/>
+        <figcaption align="middle">D_X</figcaption>
         </td>
-      </tr>
-      <br>
-      <tr>
+    </tr>
+    <br>
+    <tr>
         <td>
-          <img src="images/1_1_3.png" align="middle" width="450px"/>
-          <figcaption align="middle">D_Y</figcaption>
+        <img src="images/1_1_3.png" align="middle" width="450px"/>
+        <figcaption align="middle">D_Y</figcaption>
         </td>
         <td>
             <img src="images/1_1_4.png" align="middle" width="450px"/>
             <figcaption align="middle">Gradient Magnitude</figcaption>
         </td>
-      </tr>
-      <br>
-      <tr>
+    </tr>
+    <br>
+    <tr>
         <td>
-          <img src="images/1_1_5.png" align="middle" width="450px"/>
-          <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.21</figcaption>
+        <img src="images/1_1_5.png" align="middle" width="450px"/>
+        <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.21</figcaption>
         </td>
-      </tr>
-      
+    </tr>
+    
     </table>
-  </div>
+</div>
 
-  <h2 align="middle">Question 1.2</h2>
-    <p> 
-        Now, let's apply a Gaussian filter to the image before using a D_x and D_y convolutions. The first 5 images here are done the slow way, where we apply one gaussian filter to cameraman, and then the gradient filters.
-    </p>    
-    <div align="middle">
-      <table style="width=100%">
+<h2 align="middle">Question 1.2</h2>
+<p> 
+    Now, let's apply a Gaussian filter to the image before using a D_x and D_y convolutions. The first 5 images here are done the slow way, where we apply one gaussian filter to cameraman, and then the gradient filters.
+</p>    
+<div align="middle">
+    <table style="width=100%">
+    <tr>
+        <td>
+        <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+        <figcaption align="middle">Original Cameraman</figcaption>
+        </td>
+        <td>
+        <img src="images/slow_1_2_2.png" align="middle" width="450px"/>
+        <figcaption align="middle">D_X</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+        <img src="images/slow_1_2_3.png" align="middle" width="450px"/>
+        <figcaption align="middle">D_Y</figcaption>
+        </td>
+        <td>
+            <img src="images/slow_1_2_4.png" align="middle" width="450px"/>
+            <figcaption align="middle">Gradient Magnitude</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+        <img src="images/slow_1_2_5.png" align="middle" width="450px"/>
+        <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.03</figcaption>
+        </td>
+    </tr>
+    </table>
+</div>
+
+<p> 
+    These next 5 images are done the quick way, where we convolve the gaussian filter with the gradient filter, and then convolve that result with the original camerman image, as convolutions are associative. We can see that the same results emerge!
+</p>
+
+<div align="middle">
+    <table style="width=100%">
         <tr>
-          <td>
-            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+        <td>
+            <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
             <figcaption align="middle">Original Cameraman</figcaption>
-          </td>
-          <td>
-            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+        </td>
+        <td>
+            <img src="images/fast_1_2_2.png" align="middle" width="450px"/>
             <figcaption align="middle">D_X</figcaption>
-          </td>
+        </td>
         </tr>
         <br>
         <tr>
-          <td>
-            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+        <td>
+            <img src="images/fast_1_2_3.png" align="middle" width="450px"/>
             <figcaption align="middle">D_Y</figcaption>
-          </td>
-          <td>
-              <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
-              <figcaption align="middle">Gradient Magnitude</figcaption>
-          </td>
+        </td>
+        <td>
+            <img src="images/fast_1_2_4.png" align="middle" width="450px"/>
+            <figcaption align="middle">Gradient Magnitude</figcaption>
+        </td>
         </tr>
         <br>
         <tr>
-          <td>
-            <img src="images/slow_1_2_1.png" align="middle" width="450px"/>
+        <td>
+            <img src="images/fast_1_2_5.png" align="middle" width="450px"/>
             <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.03</figcaption>
-          </td>
+        </td>
         </tr>
-      </table>
-    </div>
+    </table>
+</div>
 
-    <p> 
-        These next 5 images are done the quick way, where we convolve the gaussian filter with the gradient filter, and then convolve that result with the original camerman image, as convolutions are associative. We can see that the same results emerge!
-    </p>
 
-    <div align="middle">
-        <table style="width=100%">
-          <tr>
+<h2 align="middle">Question 2.1</h2>
+<p>
+    Here, we are performing some image sharpening! This is done by taking a blurred version of an image and subtracting it from the original to get the high frequenices of an image. These high freqeuncies are added back to the original to create a sharper image. Here are 4 examples where I applied my image sharpener. The last example (of the bees) is blurred and then we sharpened the blurred version to see what the difference is.
+</p>
+
+<div align="middle">
+    <table style="width=100%">
+        <tr>
             <td>
-              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
-              <figcaption align="middle">Original Cameraman</figcaption>
+                <img src="images/2_1_taj.png" align="middle" width="450px"/>
+                <figcaption align="middle">Original Taj Picture</figcaption>
             </td>
             <td>
-              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
-              <figcaption align="middle">D_X</figcaption>
+                <img src="images/2_1_luka.png" align="middle" width="450px"/>
+                <figcaption align="middle">Luka Doncic gets deepfried</figcaption>
             </td>
-          </tr>
-          <br>
-          <tr>
+        </tr>
+        <br>
+        <tr>
             <td>
-              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
-              <figcaption align="middle">D_Y</figcaption>
+                <img src="images/2_1_campanile.png" align="middle" width="450px"/>
+                <figcaption align="middle">Our beautiful campanile</figcaption>
             </td>
             <td>
-                <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
-                <figcaption align="middle">Gradient Magnitude</figcaption>
+                <img src="images/2_1_bees.png" align="middle" width="450px"/>
+                <figcaption align="middle">Bees!</figcaption>
             </td>
-          </tr>
-          <br>
-          <tr>
+        </tr>
+    </table>
+</div>
+
+<h2 align="middle">Question 2.2</h2>
+<p>
+    Let's create some hybrid images! Here we pass one image through a low pass filter and a second image through a high pass filter and combine the results. Here are some examples of this phenomenom.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
             <td>
-              <img src="images/fast_1_2_1.png" align="middle" width="450px"/>
-              <figcaption align="middle">Binarized Gradient Magnitude with Threshold 0.03</figcaption>
+                <img src="images/2_2_derek.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Derek</figcaption>
             </td>
-          </tr>
-        </table>
-      </div>
+            <td>
+                <img src="images/2_2_nutmeg.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Nutmeg</figcaption>
+            </td>
+            <td>
+                <img src="images/2_2_1.png" align="middle" width="300px"/>
+                <figcaption align="middle">Derek + Nutmeg</figcaption>
+            </td>
+        </tr>
+        <br>
+        <tr>
+            <td>
+                <img src="images/2_2_biden.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Biden</figcaption>
+            </td>
+            <td>
+                <img src="images/2_2_obama.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Obama</figcaption>
+            </td>
+            <td>
+                <img src="images/2_2_3.png" align="middle" width="300px"/>
+                <figcaption align="middle">Biden + Obama</figcaption>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/2_2_oski.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Oski</figcaption>
+            </td>
+            <td>
+                <img src="images/2_2_carolchrist.jpg" align="middle" width="300px"/>
+                <figcaption align="middle">Carol</figcaption>
+            </td>
+            <td>
+                <img src="images/2_2_5.png" align="middle" width="300px"/>
+                <figcaption align="middle">Oski + Carol (my favorite)</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+<p>
+    Here are the frequency domain pictures for my favorite one (Carol Christ + Oski). The first 2 images in each row represent the frequency domain pictures of the input, and 
+</p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/2_2_7.png" align="middle" width="300px"/>
+            <figcaption align="middle">Frequency Domain of Carol Christ</figcaption>
+        </td>
+        <td>
+            <img src="images/2_2_8.png" align="middle" width="300px"/>
+            <figcaption align="middle">Frequency Domain of Oski</figcaption>
+        </td>
+        <td>
+            <img src="images/2_2_9.png" align="middle" width="300px"/>
+            <figcaption align="middle">Frequency Domain of their combined hybrid image</figcaption>
+        </td>
+    </tr>
+</table>
+
+<h2 align="middle">Question 2.3</h2>
+<p>
+    Laplacian Stack
+</p>
+
+
 </body>
 </html>
