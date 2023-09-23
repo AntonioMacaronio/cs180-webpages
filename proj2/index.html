@@ -33,7 +33,7 @@
 
 <h2 align="middle">Question 1.1</h2>
 <p> 
-    For this question, we estimated the gradients of the image function by using a specific D_x and D_y filter. Here are the results, along with the gradient magnitude and binarized threshold to increase contrast (the threshold value was 0.21).
+    For this question, we estimated the gradients of the image function by using a specific D_x and D_y filter. We are forced to estimate this with a filter of [1, -1] and its transpose because the image function is discrete, so we can only take 2 neighboring pixels and subtract them to estimate their change, which is what the -1 and 1 do when we convole the filter with the image. Here are the results, along with the gradient magnitude and binarized threshold to increase contrast (the threshold value was 0.21).
 </p>    
 <div align="middle">
     <table style="width=100%">
@@ -71,7 +71,7 @@
 
 <h2 align="middle">Question 1.2</h2>
 <p> 
-    Now, let's apply a Gaussian filter to the image before using a D_x and D_y convolutions. The first 5 images here are done the slow way, where we apply one gaussian filter to cameraman, and then the gradient filters.
+    Now, let's apply a Gaussian filter to the image before using a D_x and D_y convolutions. The first 5 images here are done the slow way, where we apply one gaussian filter to cameraman, and then the gradient filters. We can see the Gaussian filter really highlights the edges and makes them bolder.
 </p>    
 <div align="middle">
     <table style="width=100%">
@@ -263,6 +263,25 @@
         <td>
             <img src="images/2_2_9.png" align="middle" width="300px"/>
             <figcaption align="middle">Frequency Domain of their combined hybrid image</figcaption>
+        </td>
+    </tr>
+</table>
+<p>
+    Not all of them turn out great, this one picture of Lemickey is kinda scary xD
+</p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/mickeymouse.jpg" align="middle" width="300px"/>
+            <figcaption align="middle">Mickey Mouse</figcaption>
+        </td>
+        <td>
+            <img src="images/lebron.jpg" align="middle" width="300px"/>
+            <figcaption align="middle">Lebron James</figcaption>
+        </td>
+        <td>
+            <img src="images/nightmare.png" align="middle" width="300px"/>
+            <figcaption align="middle">Lemickey</figcaption>
         </td>
     </tr>
 </table>
