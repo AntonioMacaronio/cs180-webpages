@@ -201,11 +201,11 @@
     <table style="width=100%">
         <tr>
             <td>
-                <img src="images/2_2_derek.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_derek.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Derek</figcaption>
             </td>
             <td>
-                <img src="images/2_2_nutmeg.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_nutmeg.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Nutmeg</figcaption>
             </td>
             <td>
@@ -216,11 +216,11 @@
         <br>
         <tr>
             <td>
-                <img src="images/2_2_biden.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_biden.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Biden</figcaption>
             </td>
             <td>
-                <img src="images/2_2_obama.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_obama.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Obama</figcaption>
             </td>
             <td>
@@ -230,11 +230,11 @@
         </tr>
         <tr>
             <td>
-                <img src="images/2_2_oski.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_oski.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Oski</figcaption>
             </td>
             <td>
-                <img src="images/2_2_carolchrist.jpg" align="middle" width="300px"/>
+                <img src="images/2_2_carolchrist.jpg" align="middle" width="250px"/>
                 <figcaption align="middle">Carol</figcaption>
             </td>
             <td>
@@ -245,7 +245,7 @@
     </table>
 </div>
 <p>
-    Here are the frequency domain pictures for my favorite one (Carol Christ + Oski). The first 2 images in each row represent the frequency domain pictures of the input, and 
+    Here are the frequency domain pictures for my favorite one (Carol Christ + Oski). The first 2 images in each row represent the frequency domain pictures of the input, and the third one represents the frequency domain of the combined hybrid image.
 </p>
 <table style="width=100%">
     <tr>
@@ -266,9 +266,95 @@
 
 <h2 align="middle">Question 2.3</h2>
 <p>
-    Laplacian Stack
+    Here, I implemented the calculations of a Laplacian stack and Gaussian stack. The following images display these stacks with the orange, masked orange, apple, masked apple, and oraple images. This was done by first creating the Gaussian stack, where I iteratively applied a gaussian blur to generate each layer of the stack. The kernel doubled in size everytime to account for the fact that I was not subsampling the image. Then, the Laplacian stack was constructed from the Gaussian stack simply by subtracting consecutive layers. Here, every stack had a height of 5.
 </p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/apple_stacks.png" align="middle" width="600px"/>
+            <figcaption align="middle">Laplacian and Gaussian stacks of the apple</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/masked_apple_stacks.png" align="middle" width="600px"/>
+            <figcaption align="middle">Laplacian and Gaussian stacks of the masked apple</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/orange_stacks.png" align="middle" width="600px"/>
+            <figcaption align="middle">Laplacian and Gaussian stacks of the orange</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/masked_orange_stacks.png" align="middle" width="600px"/>
+            <figcaption align="middle">Laplacian and Gaussian stacks of the masked orange</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/oraple_stacks.png" align="middle" width="600px"/>
+            <figcaption align="middle">Laplacian and Gaussian stacks of the oraple</figcaption>
+        </td>
+    </tr>
+</table>
 
+<h2 align="middle">Question 2.4</h2>
+<p>
+    This next part is the results of implementing Burt and Adelson's spline paper to blend images together. The first picture shows the classic oraple, and the later 2 pictures are done with an irregular mask. 
+</p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/orange.jpeg" align="middle" width="300px"/>
+            <figcaption align="middle">Orange</figcaption>
+        </td>
+        <td>
+            <img src="images/apple.jpeg" align="middle" width="300px"/>
+            <figcaption align="middle">Apple</figcaption>
+        </td>
+        <td>
+            <img src="images/oraple.png" align="middle" width="300px"/>
+            <figcaption align="middle">Oraple (Blended Orange + Apple)</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/earth.jpg" align="middle" width="300px"/>
+            <figcaption align="middle">Earth</figcaption>
+        </td>
+        <td>
+            <img src="images/neptune.jpg" align="middle" width="300px"/>
+            <figcaption align="middle">Neptune</figcaption>
+        </td>
+        <td>
+            <img src="images/earthneptune.png" align="middle" width="300px"/>
+            <figcaption align="middle">Earth and Neptune (Custom checkerboard mask created with photoshop)</figcaption>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <td>
+            <img src="images/spotify_logo.png" align="middle" width="300px"/>
+            <figcaption align="middle">Spotify Logo</figcaption>
+        </td>
+        <td>
+            <img src="images/instagram_logo.png" align="middle" width="300px"/>
+            <figcaption align="middle">Instagram Logo</figcaption>
+        </td>
+        <td>
+            <img src="images/spotify_instagram.png" align="middle" width="300px"/>
+            <figcaption align="middle">Spotify + Instagram Logo (Custom zigzag mask created with photoshop)</figcaption>
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>
