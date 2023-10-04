@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180: Face Morphing</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 180: Intro to Computer Vision and Computational Photography, Fa2023</h1>
+<h1 align="middle">Project 3: Face Morphing</h1>
+<h2 align="middle">ANTHONY ZHANG, 3036218223</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Part 1: Defining Correspondences</h2>
+<p> 
+    For this question, I defined the correspondence points for my 2 images using the tool provided on the project spec. The images I used were my calcentral photo, and a beautiful picture of george clooney. The below picture also shows the triangulations, but only the midway one was computed. The triangulations of im1 and im2 were formed by simply using the corresponding indices of the Delauney function.
+</p>    
+<div align="middle">
+    <table style="width=100%">
+    <tr>
+        <td>
+        <img src="images/realCalCentral.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">Calcentral Photo</figcaption>
+        </td>
+        <td>
+        <img src="images/george_small.jpeg" align="middle" width="450px"/>
+        <figcaption align="middle">George Clooney</figcaption>
+        </td>
+    </tr>
+    </table>
+</div>
+
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/correspondence.png" align="middle" width="900px"/>
+      <figcaption align="middle">Correspondence Points and the Delauney Triangulation (only the midway triangulation was computed) </figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 2: Computing the "Midway" Face</h2>
+<p> 
+    In this part, I calculated the midway face. This was done by using the triangulations of part 1 to calculate inverse affine transformations between corresponding triangles. Then, we interpolated the colors of the pixels inside each triangle with bilinear interpolation (The results shown are nearest enighbor interpolation because it was much faster).
+    The images below show the same Calcentral and George Clooney photo, as well as their midway picture.
+</p>    
+<div align="middle">
+    <table style="width=100%">
+    <tr>
+        <td>
+        <img src="images/realCalCentral.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">Same Calcentral Photo</figcaption>
+        </td>
+        <td>
+        <img src="images/george_small.jpeg" align="middle" width="450px"/>
+        <figcaption align="middle">Same George Clooney Photo</figcaption>
+        </td>
+        <td>
+          <img src="images/midway_face.jpg" align="middle" width="450px"/>
+          <figcaption align="middle">Midway Image!</figcaption>
+          </td>
+    </tr>
+    </table>
+</div>
+
+
+<h2 align="middle">Part 3: The Morph Seqeunce</h2>
+<p>
+    Let's start morphing so we can create an animation! Simply by toggling the values of how much we warp and cross-dissolve, I created the animation below.
+</p>
+
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+                <img src="images/calcentral_to_george.gif" align="middle" width="600px"/>
+                <figcaption align="middle"Morphing from George to my Calcentral photo.</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h2 align="middle">Part 4: The "Mean Face" of a Population</h2>
+<p>
+    In this part, I calculated the mean face of the Danes dataset. Specifically - I only used photos of males that were facing directly forwards and not smiling to try to find what the normal dude looks like.
+    Additionally, I warped my face (how I look right now) into the average geometry and also warped the average face into the geoemtry of my face.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+                <img src="images/41.jpg" align="middle" width="250px"/>
+                <figcaption align="middle">"Mean Face" of the Danes dataset</figcaption>
+            </td>
+            <td>
+                <img src="images/42.jpg" align="middle" width="250px"/>
+                <figcaption align="middle">Current Photo of Me</figcaption>
+            </td>
+        </tr>
+        <br>
+        <tr>
+          <td>
+              <img src="images/43.png" align="middle" width="250px"/>
+              <figcaption align="middle">Warping my Face into the Average Geometry of the Danes Dataset</figcaption>
+          </td>
+          <td>
+              <img src="images/44.png" align="middle" width="250px"/>
+              <figcaption align="middle">Warping the "Mean Face" into my Face's Geometry</figcaption>
+          </td>
+      </tr>
+    </table>
+</div>
+
+<h2 align="middle">Part 5: Caricatures - Extrapolating from the Mean</h2>
+<p>
+    In this part, I extrapolated my face to the average geometry and got some pretty funny results. 
+</p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/51.png" align="middle" width="600px"/>
+            <figcaption align="middle">My face overextrapolated to the average geomtry.</figcaption>
+        </td>
+        <td>
+          <img src="images/52.png" align="middle" width="600px"/>
+          <figcaption align="middle">The average geomtry overextrapolated to my face's geoemtry, while maintaining my faces' colors.</figcaption>
+      </td>
+    </tr>
+</table>
+
+<h2 align="middle">Bells and Whistles</h2>
+<p>
+    I created a morphing animation of myself over the years. There is a picture of myself every year from 2014 to 2023, and I created a morph seqeunce for every transition by manually defining their correspondences.
+    There is no music because of the gif format, but if you want a theme song of my life, here is a link to play as you watch the gif: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+</p>
+<table style="width=100%">
+    <tr>
+        <td>
+            <img src="images/ant2014_to_ant2023.gif" align="middle" width="900px"/>
+            <figcaption align="middle">Anthony 2014 to Anthony 2023 :D</figcaption>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
