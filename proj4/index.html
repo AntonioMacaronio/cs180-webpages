@@ -31,20 +31,24 @@
 
 <div>
 
-<h2 align="middle">Part 1: Defining Correspondences</h2>
+<h2 align="middle">Part 1: Shoot the Pictures</h2>
 <p> 
-    For this question, I defined the correspondence points for my 2 images using the tool provided on the project spec. The images I used were my calcentral photo, and a beautiful picture of george clooney. The below picture also shows the triangulations, but only the midway one was computed. The triangulations of im1 and im2 were formed by simply using the corresponding indices of the Delauney function.
+    I mostly went aronud campus and shot a bunch of pictures, but a lot of my pictures did not come out that well because I was too shaky. I ended up performing a bunch of homographies and stiching, hopefully 
 </p>    
 <div align="middle">
     <table style="width=100%">
     <tr>
         <td>
-        <img src="images/realCalCentral.jpg" align="middle" width="450px"/>
-        <figcaption align="middle">Calcentral Photo</figcaption>
+        <img src="images/im1left.jpg" align="middle" width="300px"/>
+        <figcaption align="middle"></figcaption>
         </td>
         <td>
-        <img src="images/george_small.jpeg" align="middle" width="450px"/>
-        <figcaption align="middle">George Clooney</figcaption>
+        <img src="images/im1mid.jpg" align="middle" width="300px"/>
+        <figcaption align="middle">Li Ka Shing to the Bay Viewpoint</figcaption>
+        </td>
+        <td>
+          <img src="images/im1right.jpg" align="middle" width="300px"/>
+          <figcaption align="middle"></figcaption>
         </td>
     </tr>
     </table>
@@ -54,115 +58,151 @@
   <table style="width=100%">
   <tr>
       <td>
-      <img src="images/correspondence.png" align="middle" width="900px"/>
-      <figcaption align="middle">Correspondence Points and the Delauney Triangulation (only the midway triangulation was computed) </figcaption>
+      <img src="images/im3left.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Left Side of My Backyard</figcaption>
+      </td>
+      <td>
+      <img src="images/im3right.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Right Side of My Backyard</figcaption>
       </td>
   </tr>
+  <tr>
+    <td>
+    <img src="images/im4left.jpg" align="middle" width="450px"/>
+    <figcaption align="middle">Left Side of Rose Street, Berkeley</figcaption>
+    </td>
+    <td>
+    <img src="images/im4right.jpg" align="middle" width="450px"/>
+    <figcaption align="middle">Right Side of Rose Street, Berkeley</figcaption>
+    </td>
+</tr>
   </table>
 </div>
 
-<h2 align="middle">Part 2: Computing the "Midway" Face</h2>
+<h2 align="middle">Part 2: Recovering Homographies</h2>
 <p> 
-    In this part, I calculated the midway face. This was done by using the triangulations of part 1 to calculate inverse affine transformations between corresponding triangles. Then, we interpolated the colors of the pixels inside each triangle with bilinear interpolation (The results shown are nearest enighbor interpolation because it was much faster).
-    The images below show the same Calcentral and George Clooney photo, as well as their midway picture.
+    A homography can be defined by 4 pairs of corresponding points, and it has 8 degrees of freedom, since the last entry is a scaling factor. The following equation from office hours describes how to solve for a homography. One problem is that the system is overdetermined if you have more than 4 pairs of points, so simply using least squares to find the minimum error homography solution is a quick and clear qay of dealing with this, while also adding a layer of robustness. 
+    The next image shows the code I used to build the homography.
 </p>    
 <div align="middle">
     <table style="width=100%">
     <tr>
         <td>
-        <img src="images/realCalCentral.jpg" align="middle" width="300px"/>
-        <figcaption align="middle">Same Calcentral Photo</figcaption>
+        <img src="images/homography_eq.png" align="middle" width="300px"/>
+        <figcaption align="middle">To add more points, simply horizontally stack more.</figcaption>
         </td>
-        <td>
-        <img src="images/george_small.jpeg" align="middle" width="300"/>
-        <figcaption align="middle">Same George Clooney Photo</figcaption>
-        </td>
-        <td>
-          <img src="images/midway_face.jpg" align="middle" width="300"/>
-          <figcaption align="middle">Midway Image!</figcaption>
-          </td>
     </tr>
+    <tr>
+      <td>
+      <img src="images/homography_code.png" align="middle" width="300px"/>
+      <figcaption align="middle">This code accepts any number of points, and uses least squares.</figcaption>
+      </td>
+  </tr>
     </table>
 </div>
 
 
-<h2 align="middle">Part 3: The Morph Seqeunce</h2>
+<h2 align="middle">Part 3: Warp the Images</h2>
 <p>
-    Let's start morphing so we can create an animation! Simply by toggling the values of how much we warp and cross-dissolve, I created the animation below.
+    Here is some examples of the warping applied to do some image rectification! I'm not sure why they did not turn out the best - there is some issue with the processing of the 
 </p>
 
 <div align="middle">
-    <table style="width=100%">
-        <tr>
-            <td>
-                <img src="images/calcentral_to_george.gif" align="middle" width="600px"/>
-                <figcaption align="middle"Morphing from George to my Calcentral photo.</figcaption>
-            </td>
-        </tr>
-    </table>
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/rectify1.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Original Textbook on Table</figcaption>
+      </td>
+      <td>
+      <img src="images/im3right.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Rectified Textbook Cover</figcaption>
+      </td>
+  </tr>
+  <tr>
+    <td>
+    <img src="images/rectify2.jpg" align="middle" width="450px"/>
+    <figcaption align="middle">Original Computer Scrren</figcaption>
+    </td>
+    <td>
+    <img src="images/im4right.jpg" align="middle" width="450px"/>
+    <figcaption align="middle">Rectified Computer Screen</figcaption>
+    </td>
+</tr>
+  </table>
 </div>
 
-<h2 align="middle">Part 4: The "Mean Face" of a Population</h2>
+<h2 align="middle">Part 4: Blend the Images into a Mosaic</h2>
 <p>
-    In this part, I calculated the mean face of the Danes dataset. Specifically - I only used photos of males that were facing directly forwards and not smiling to try to find what the normal dude looks like.
-    Additionally, I warped my face (how I look right now) into the average geometry and also warped the average face into the geoemtry of my face.
+    Here are the images from earlier blended into a mosaic - I used the negative coordinates to offset and align the images, which actually turned out pretty nicely! The images were blended together with weighted averaging, which also turned out quite nicely. I believe the distortion and blurriness is not from misalignment, as I double checked my maths strenously, but rather just from moving the position of the camera too much between pictures. I believe a tripod wouldn't helped massively here.
 </p>
 <div align="middle">
     <table style="width=100%">
         <tr>
             <td>
-                <img src="images/41.jpg" align="middle" width="450px"/>
-                <figcaption align="middle">"Mean Face" of the Danes dataset</figcaption>
+              <img src="images/im1left.jpg" align="middle" width="600px"/>
+              <figcaption align="middle">Left Part</figcaption>
             </td>
             <td>
-                <img src="images/42.jpg" align="middle" width="450px"/>
-                <figcaption align="middle">Current Photo of Me</figcaption>
+              <img src="images/im1mid.jpg" align="middle" width="600px"/>
+              <figcaption align="middle">Middle Part</figcaption>
+          </td>
+            <td>
+                <img src="images/im1leftmid.jpg.jpg" align="middle" width="600px"/>
+                <figcaption align="middle">Mosaic of Li Ka Shing Bay Viewpoint (Left and Middle Images)</figcaption>
             </td>
         </tr>
         <br>
         <tr>
           <td>
-              <img src="images/43.png" align="middle" width="450px"/>
-              <figcaption align="middle">Warping my Face into Average Geometry of "Mean Face"</figcaption>
+            <img src="images/im4left.jpg" align="middle" width="600px"/>
+            <figcaption align="middle">Left Half</figcaption>
           </td>
           <td>
-              <img src="images/44.png" align="middle" width="450px"/>
-              <figcaption align="middle">Warping the "Mean Face" into my Face's Geometry</figcaption>
+            <img src="images/im4right.jpg" align="middle" width="600px"/>
+            <figcaption align="middle">Right Half</figcaption>
+        </td>
+          <td>
+              <img src="images/im4_test1.jpg" align="middle" width="600px"/>
+              <figcaption align="middle">Mosaic of Rose Street at Night (Left and Right Images)</figcaption>
           </td>
-      </tr>
+        </tr>
+        <br>
+        <tr>
+          <td>
+            <img src="images/im3left.jpg" align="middle" width="600px"/>
+            <figcaption align="middle">Left Half</figcaption>
+          </td>
+          <td>
+            <img src="images/im3right.jpg" align="middle" width="600px"/>
+            <figcaption align="middle">Right Half</figcaption>
+        </td>
+          <td>
+              <img src="images/im3_test1.jpg" align="middle" width="600px"/>
+              <figcaption align="middle">Mosaic of my Backyard</figcaption>
+          </td>
+        </tr>
+        
     </table>
 </div>
 
-<h2 align="middle">Part 5: Caricatures - Extrapolating from the Mean</h2>
-<p>
-    In this part, I extrapolated my face to the average geometry and got some pretty funny results. 
-</p>
-<table style="width=100%">
-    <tr>
-        <td>
-            <img src="images/51.png" align="middle" width="450px"/>
-            <figcaption align="middle">My face overextrapolated to the average geomtry.</figcaption>
-        </td>
-        <td>
-          <img src="images/52.png" align="middle" width="450px"/>
-          <figcaption align="middle">The average geomtry overextrapolated to my face's geoemtry, while maintaining my faces' colors.</figcaption>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/im1_test.jpg" align="middle" width="300px"/>
+      <figcaption align="middle">Full Li Ka Shing Mosaic</figcaption>
       </td>
-    </tr>
-</table>
+  </tr>
+  </table>
+</div>
 
-<h2 align="middle">Bells and Whistles</h2>
+
+
+<h2 align="middle">Part 5: What I've Learned</h2>
 <p>
-    I created a morphing animation of myself over the years. There is a picture of myself every year from 2014 to 2023, and I created a morph seqeunce for every transition by manually defining their correspondences.
-    There is no music because of the gif format, but if you want a theme song of my life, here is a link to play as you watch the gif: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    I learned a lot about how homographies work and the way we can rebuild any plane and see how light intersects that plane. That was really cool to me. I learned a lot about various techniques of blending as well.
 </p>
-<table style="width=100%">
-    <tr>
-        <td>
-            <img src="images/ant2014_to_ant2023.gif" align="middle" width="600px"/>
-            <figcaption align="middle">Anthony 2014 to Anthony 2023 :D</figcaption>
-        </td>
-    </tr>
-</table>
 
 </body>
 </html>
