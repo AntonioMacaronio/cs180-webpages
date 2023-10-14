@@ -33,7 +33,7 @@
 
 <h2 align="middle">Part 1: Shoot the Pictures</h2>
 <p> 
-    I mostly went aronud campus and shot a bunch of pictures, but a lot of my pictures did not come out that well because I was too shaky. I ended up performing a bunch of homographies and stiching, hopefully 
+    I mostly went aronud campus and shot a bunch of pictures, but a lot of my pictures did not come out that well because I was too shaky. I ended up performing a bunch of homographies and stiching, but only a few turned out good. Those results are depicted below (The first set of images come from Li Ka Shing).
 </p>    
 <div align="middle">
     <table style="width=100%">
@@ -44,7 +44,7 @@
         </td>
         <td>
         <img src="images/im1mid.jpg" align="middle" width="300px"/>
-        <figcaption align="middle">Li Ka Shing to the Bay Viewpoint</figcaption>
+        <figcaption align="middle"></figcaption>
         </td>
         <td>
           <img src="images/im1right.jpg" align="middle" width="300px"/>
@@ -82,29 +82,33 @@
 <h2 align="middle">Part 2: Recovering Homographies</h2>
 <p> 
     A homography can be defined by 4 pairs of corresponding points, and it has 8 degrees of freedom, since the last entry is a scaling factor. The following equation from office hours describes how to solve for a homography. One problem is that the system is overdetermined if you have more than 4 pairs of points, so simply using least squares to find the minimum error homography solution is a quick and clear qay of dealing with this, while also adding a layer of robustness. 
-    The next image shows the code I used to build the homography.
+    The next image shows the code I used to build the homography. 
 </p>    
 <div align="middle">
     <table style="width=100%">
     <tr>
         <td>
-        <img src="images/homography_eq.png" align="middle" width="300px"/>
-        <figcaption align="middle">To add more points, simply horizontally stack more.</figcaption>
+        <img src="images/homography_eq.png" align="middle" width="600px"/>
+        <figcaption align="middle">To add more points, simply stack more vertically, which robustifies the homography.</figcaption>
         </td>
     </tr>
-    <tr>
-      <td>
-      <img src="images/homography_code.png" align="middle" width="300px"/>
-      <figcaption align="middle">This code accepts any number of points, and uses least squares.</figcaption>
-      </td>
-  </tr>
     </table>
+</div>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+    <img src="images/homography_code.png" align="middle" width="600"/>
+    <figcaption align="middle">This code accepts any number of points and uses least squares.</figcaption>
+    </td>
+</tr>
+  </table>
 </div>
 
 
 <h2 align="middle">Part 3: Warp the Images</h2>
 <p>
-    Here is some examples of the warping applied to do some image rectification! I'm not sure why they did not turn out the best - there is some issue with the processing of the 
+    Here is some examples of the warping applied to do some image rectification! While the results are not bad, I think there is some error with the black space because I misclicked the correspondence point. The second image is a little better but the misclick can add a lot of black background, especially because both pictures were taken at such a sharp angle.
 </p>
 
 <div align="middle">
@@ -115,17 +119,17 @@
       <figcaption align="middle">Original Textbook on Table</figcaption>
       </td>
       <td>
-      <img src="images/im3right.jpg" align="middle" width="450px"/>
+      <img src="images/rectified1.jpg" align="middle" width="450px"/>
       <figcaption align="middle">Rectified Textbook Cover</figcaption>
       </td>
   </tr>
   <tr>
     <td>
     <img src="images/rectify2.jpg" align="middle" width="450px"/>
-    <figcaption align="middle">Original Computer Scrren</figcaption>
+    <figcaption align="middle">Original Computer Screen</figcaption>
     </td>
     <td>
-    <img src="images/im4right.jpg" align="middle" width="450px"/>
+    <img src="images/rectified2.jpg" align="middle" width="450px"/>
     <figcaption align="middle">Rectified Computer Screen</figcaption>
     </td>
 </tr>
@@ -140,45 +144,45 @@
     <table style="width=100%">
         <tr>
             <td>
-              <img src="images/im1left.jpg" align="middle" width="600px"/>
+              <img src="images/im1left.jpg" align="middle" width="300px"/>
               <figcaption align="middle">Left Part</figcaption>
             </td>
             <td>
-              <img src="images/im1mid.jpg" align="middle" width="600px"/>
+              <img src="images/im1mid.jpg" align="middle" width="300px"/>
               <figcaption align="middle">Middle Part</figcaption>
           </td>
             <td>
-                <img src="images/im1leftmid.jpg.jpg" align="middle" width="600px"/>
+                <img src="images/im1leftmid.jpg" align="middle" width="300px"/>
                 <figcaption align="middle">Mosaic of Li Ka Shing Bay Viewpoint (Left and Middle Images)</figcaption>
             </td>
         </tr>
         <br>
         <tr>
           <td>
-            <img src="images/im4left.jpg" align="middle" width="600px"/>
+            <img src="images/im4left.jpg" align="middle" width="300px"/>
             <figcaption align="middle">Left Half</figcaption>
           </td>
           <td>
-            <img src="images/im4right.jpg" align="middle" width="600px"/>
+            <img src="images/im4right.jpg" align="middle" width="300px"/>
             <figcaption align="middle">Right Half</figcaption>
         </td>
           <td>
-              <img src="images/im4_test1.jpg" align="middle" width="600px"/>
+              <img src="images/im4_test1.jpg" align="middle" width="300px"/>
               <figcaption align="middle">Mosaic of Rose Street at Night (Left and Right Images)</figcaption>
           </td>
         </tr>
         <br>
         <tr>
           <td>
-            <img src="images/im3left.jpg" align="middle" width="600px"/>
+            <img src="images/im3left.jpg" align="middle" width="300px"/>
             <figcaption align="middle">Left Half</figcaption>
           </td>
           <td>
-            <img src="images/im3right.jpg" align="middle" width="600px"/>
+            <img src="images/im3right.jpg" align="middle" width="300px"/>
             <figcaption align="middle">Right Half</figcaption>
         </td>
           <td>
-              <img src="images/im3_test1.jpg" align="middle" width="600px"/>
+              <img src="images/im3_test1.jpg" align="middle" width="300px"/>
               <figcaption align="middle">Mosaic of my Backyard</figcaption>
           </td>
         </tr>
@@ -190,7 +194,7 @@
   <table style="width=100%">
   <tr>
       <td>
-      <img src="images/im1_test.jpg" align="middle" width="300px"/>
+      <img src="images/im1_test.jpg" align="middle" width="750px"/>
       <figcaption align="middle">Full Li Ka Shing Mosaic</figcaption>
       </td>
   </tr>
