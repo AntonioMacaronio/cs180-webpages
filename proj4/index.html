@@ -31,7 +31,7 @@
 
 <div>
 
-<h2 align="middle">Part 1: Shoot the Pictures</h2>
+<h2 align="middle">Part 1A: Shoot the Pictures</h2>
 <p> 
     I mostly went aronud campus and shot a bunch of pictures, but a lot of my pictures did not come out that well because I was too shaky. I ended up performing a bunch of homographies and stiching, but only a few turned out good. Those results are depicted below (The first set of images come from Li Ka Shing).
 </p>    
@@ -79,7 +79,7 @@
   </table>
 </div>
 
-<h2 align="middle">Part 2: Recovering Homographies</h2>
+<h2 align="middle">Part 2A: Recovering Homographies</h2>
 <p> 
     A homography can be defined by 4 pairs of corresponding points, and it has 8 degrees of freedom, since the last entry is a scaling factor. The following equation from office hours describes how to solve for a homography. One problem is that the system is overdetermined if you have more than 4 pairs of points, so simply using least squares to find the minimum error homography solution is a quick and clear qay of dealing with this, while also adding a layer of robustness. 
     The next image shows the code I used to build the homography. 
@@ -106,7 +106,7 @@
 </div>
 
 
-<h2 align="middle">Part 3: Warp the Images</h2>
+<h2 align="middle">Part 3A: Warp the Images</h2>
 <p>
     Here is some examples of the warping applied to do some image rectification! While the results are not bad, I think there is some error with the black space because I misclicked the correspondence point. The second image is a little better but the misclick can add a lot of black background, especially because both pictures were taken at such a sharp angle.
 </p>
@@ -136,60 +136,93 @@
   </table>
 </div>
 
-<h2 align="middle">Part 4: Blend the Images into a Mosaic</h2>
+<h2 align="middle">Part 4A: Blend the Images into a Mosaic</h2>
 <p>
-    Here are the images from earlier blended into a mosaic - I used the negative coordinates to offset and align the images, which actually turned out pretty nicely! The images were blended together with weighted averaging, which also turned out quite nicely. I believe the distortion and blurriness is not from misalignment, as I double checked my maths strenously, but rather just from moving the position of the camera too much between pictures. I believe a tripod would have helped massively here.
+    Here are the images from earlier blended into a mosaic - I used the negative coordinates to offset and align the images, which actually was the perfect alignment! 
+    The images were blended together with weighted averaging of a blurred mask for each laplacian stack of the image (analogous to Orapple), which also turned out quite nicely. 
+    I believe the the tiny amount of distortion and blurriness is not from misalignment, but rather just from moving the position of the camera too much between picture, as I did not have a tripod.
 </p>
+
 <div align="middle">
-    <table style="width=100%">
-        <tr>
-            <td>
-              <img src="images/im1left.jpg" align="middle" width="300px"/>
-              <figcaption align="middle">Left Part</figcaption>
-            </td>
-            <td>
-              <img src="images/im1mid.jpg" align="middle" width="300px"/>
-              <figcaption align="middle">Middle Part</figcaption>
-          </td>
-            <td>
-                <img src="images/im1leftmid.jpg" align="middle" width="300px"/>
-                <figcaption align="middle">Mosaic of Li Ka Shing Bay Viewpoint (Left and Middle Images)</figcaption>
-            </td>
-        </tr>
-        <br>
-        <tr>
-          <td>
-            <img src="images/im4left.jpg" align="middle" width="300px"/>
-            <figcaption align="middle">Left Half</figcaption>
-          </td>
-          <td>
-            <img src="images/im4right.jpg" align="middle" width="300px"/>
-            <figcaption align="middle">Right Half</figcaption>
-        </td>
-          <td>
-              <img src="images/im4_test1.jpg" align="middle" width="300px"/>
-              <figcaption align="middle">Mosaic of Rose Street at Night (Left and Right Images)</figcaption>
-          </td>
-        </tr>
-        <br>
-        <tr>
-          <td>
-            <img src="images/im3left.jpg" align="middle" width="300px"/>
-            <figcaption align="middle">Left Half</figcaption>
-          </td>
-          <td>
-            <img src="images/im3right.jpg" align="middle" width="300px"/>
-            <figcaption align="middle">Right Half</figcaption>
-        </td>
-          <td>
-              <img src="images/im3_test1.jpg" align="middle" width="300px"/>
-              <figcaption align="middle">Mosaic of my Backyard</figcaption>
-          </td>
-        </tr>
-        
-    </table>
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/im1mid.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Middle Part</figcaption>
+    </td>
+    <td>
+      <img src="images/im1right.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Right Part</figcaption>
+    </td>
+  </tr>
+  <br>
+  <tr>
+    <td>
+      <img src="images/im1leftmid.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Mosaic of Li Ka Shing Bay Viewpoint (No Blending)</figcaption>
+    </td>
+    <td>
+      <img src="images/im1leftmid_blended.jpg" align="middle" width="450"/>
+      <figcaption align="middle">Blended Mosaic of Li Ka Shing Bay Viewpoint</figcaption>
+    </td>
+  </tr>
+  </table>
 </div>
 
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/im4left.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Left Half of Rose Street, Berkeley</figcaption>
+    </td>
+    <td>
+      <img src="images/im4right.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Right Half of Rose Street, Berkeley</figcaption>
+    </td>
+  </tr>
+  <br>
+  <tr>
+    <td>
+      <img src="images/im4.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Mosaic of Rose Street (No Blending)</figcaption>
+    </td>
+    <td>
+      <img src="images/im4_blended.jpg" align="middle" width="450"/>
+      <figcaption align="middle">Blended Mosaic of Rose Street</figcaption>
+    </td>
+  </tr>
+  </table>
+</div>
+
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/im3left.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Left Half of My Backyard</figcaption>
+    </td>
+    <td>
+      <img src="images/im3right.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Right Half of My Backyard</figcaption>
+    </td>
+  </tr>
+  <br>
+  <tr>
+    <td>
+      <img src="images/im3.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Mosaic of Backyard (No Blending)</figcaption>
+    </td>
+    <td>
+      <img src="images/im3_blended.jpg" align="middle" width="450"/>
+      <figcaption align="middle">Blended Mosaic of Backyard</figcaption>
+    </td>
+  </tr>
+  </table>
+</div>
+<p>
+  I tried to blend all 3 Li Ka Shing pictures together into one mosaic, but I kept having issues with floating point averaging as well as corruption along the right edge and aligning the right image (which persisted even with regular aligning), so I just stiched them together below to showcase this.
+</p>
 <div align="middle">
   <table style="width=100%">
   <tr>
@@ -203,9 +236,205 @@
 
 
 
-<h2 align="middle">Part 5: What I've Learned</h2>
+<h2 align="middle">Part 5A: What I've Learned</h2>
 <p>
     I learned a lot about how homographies work and the way we can rebuild any plane and see how light intersects that plane. That was really cool to me. I learned a lot about various techniques of blending as well.
+</p>
+
+<h1 align="middle">Project 4B: Automatically Stitching Photo Mosaics!</h1>
+<p>
+  Earlier, I had to use a correspondence tool to manually pick points that matched so I can perform the homography. 
+  This second part of the project is to automate that process.
+</p>
+<h2 align="middle">Part 1B: Detecting Corner Features in an Image</h2>
+<p>
+    To find the corners and notable features in an image, I used a Harris Corner Extractor, and the results of this are depicted below. 
+    This process involves convolving patches with themselves, and then calculating the eigenvalues of the ellipse formed by the locus of points of gradient detectors.
+    In the images below, there the brighter the pixel, the higher the weight of a corner/feature.
+</p>
+
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/im1left_harris.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Harris Corners of Left Li Ka Shing</figcaption>
+    </td>
+    <td>
+      <img src="images/im1mid_harris.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Harris Corners of Right Li Ka Shing</figcaption>
+    </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 2B: Adaptive Non-Maximal Suppresion to Select Features</h2>
+<p>
+  To pick the features to use, we would like to use some method that spaces out features evenly across the image while also selecting the most potent (brightest) ones.
+  The method described here is called <b>Adaptive Non-Maximal Supression</b> or <b>ANMS</b> for short.
+  This method works by computing the suppresion radius for each feature, which is defined as the smallest distance to another feature that's stronger (based on a robustness parameter). 
+  Then we select the n features with the highest supression radius. The code to do this is shown below.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/anms_code.png" align="middle" width="500px"/>
+      <figcaption align="middle">Calculates the ANMS</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+<p>
+  The following pictures depict how ANMS selects features which are spread out. 
+  The red points are just the most notable features picked up by the Harris detector, while the blue points are ones selected by ANMS.
+  The second shows a comparison to show the effect ANMS has in spreading out the features.
+</p>
+
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/im1left_anms_selection.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Left Li Ka Shing with ANMS</figcaption>
+      </td>
+      <td>
+        <img src="images/im1mid_anms_selection.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">Right Li Ka Shing with ANMS</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/im1left_random100.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Simply selecting 100 random features</figcaption>
+      </td>
+      <td>
+        <img src="images/im1left_anms100.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">Selecting 100 features from ANMS (much more spread out)</figcaption>
+        </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 2B Continued: Feature Extraction Time!</h2>
+<p>
+  After selecting our interest points with ANMS, we take a 40x40 patch around each interest point, and downsize it to an 8x8 as descripted in the MOPS paper. 
+  Then, each patch is normalized. Below shows the code used for feature extraction, and to right of the code depicts the features I extracted for the set of Li Ka Shing images.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/featureExtractCode.png" align="middle" width="450px"/>
+      <figcaption align="middle">Calculates the feature descriptors from ANMS</figcaption>
+      </td>
+      <td>
+        <img src="images/im1left_features.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">The feature descriptors themselves</figcaption>
+        </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 3B: Matching</h2>
+<p>
+  After computing the feature descriptors, we want to match them across the set of images. 
+  Firstly, for each feature i in image1, I computed the SSD (Sum of Squared Differences) error for every feature j in image2.
+  Based off Angjoo's saying that "All happy marriages are from the same reasons", we divide the lowest SSD error by the second lowest.
+  If this ratio is below a threshold (I picked 0.4 as my threshold), we have a match! Thus, the matching process filters out many of the features selected by ANMS.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/featureMatchingCode.png" align="middle" width="450px"/>
+      <figcaption align="middle">Calculates the feature matches!</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/im1leftmid_featureMatching.jpg" align="middle" width="900px"/>
+      <figcaption align="middle">Here are the feature matches I computed for the Li Ka Shing images! (Same Number = Match)</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 4B: RANSAC Robustification!</h2>
+<p>
+  Despite us already picking the best of the best features from ANMS with feature matching, we need to do further robustification! 
+  This is where RANSAC comes in. 
+  <br><br>
+  RANSAC randomly selects 4 matches and computes a homography for a specified number of times (I selected 150).
+  Out of the original set matches, it calculates how many inliers there are for that homography (An inlier is a match with error less than epsilon, which I chose to be 0.02)
+  It keeps the largest set of inliers, and uses that to compute the final homography between the two images.
+  <br><br> 
+  Below, I have depicted the inlier set my RANSAC algorithm found from the original feature matches in blue.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/im1leftmid_ransac.jpg" align="middle" width="900px"/>
+      <figcaption align="middle">Red = Original Feature Matches, Blue = RANSAC Chosen Inliers</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+
+
+<h2 align="middle">Final Results - Comparing between Manual and Automated Homographies</h2>
+<p> The mosaics shown below were all blended utilizing the weighted averaging of a mask across different frequencies.</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/manual_im1leftmid_blended.jpg" align="middle" width="450px"/>
+      <figcaption align="middle">Manually Computed Li Ka Shing (Blended)</figcaption>
+    </td>
+    <td>
+        <img src="images/auto_im1leftmid_best.png" align="middle" width="450px"/>
+        <figcaption align="middle">Automated Correspondence Li Ka Shing (Blended)</figcaption>
+    </td>
+  </tr>
+  <br>  
+  <tr>
+      <td>
+        <img src="images/im4_blended.jpg" align="middle" width="450px"/>
+        <figcaption align="middle">Manually Computed Rose Street (Blended)</figcaption>
+      </td>
+      <td>
+          <img src="images/auto_im4.jpg" align="middle" width="450px"/>
+          <figcaption align="middle">Automated Correspondence Rose Street (Blended)</figcaption>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <img src="images/im3_blended.jpg" align="middle" width="450px"/>
+          <figcaption align="middle">Manually Computed Backyard (Blended)</figcaption>
+        </td>
+          <td>
+            <img src="images/im3_blended.jpg" align="middle" width="450px"/>
+            <figcaption align="middle">Automated Correspondence Backyard (Blended)</figcaption>
+        </td>
+  </tr>
+  </table>
+</div>
+
+<h2 align="middle">What I've Learned</h2>
+<p>
+  I loved learning about how the harris corner detector works. 
+  It was super intriguing to see how we turned this into a problem of fitting a ellipsoid to a locus of points and finding its eigenvalues.
+  I also really enjoyed learning about ANMS and Ransac to select features and matches, who knew so much robustification was needed?
 </p>
 
 </body>
