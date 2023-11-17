@@ -1,591 +1,229 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <style>
-    body {
-      background-color: #404040;
-      background-color: white;
-      padding: 100px;
-      width: 1000px;
-      margin: auto;
-      text-align: left;
-      font-weight: 300;
-      font-family: 'Open Sans', sans-serif;
-      color: #121212;
-      /* cursor: url(https://rsha256.github.io/teapot-clear32.png), default!important;
-      cursor: url(https://rsha256.github.io/teapot-clear32.png), pointer!important; */
-      cursor: url(https://rsha256.github.io/dragon-clear32.png), default!important;
-      cursor: url(https://rsha256.github.io/dragon-clear32.png), pointer!important;
-      /* cursor: url(https://rsha256.github.io/cloth-clear-32.png), default!important;
-      cursor: url(https://rsha256.github.io/cloth-clear-32.png), pointer!important; */
-    }
-    h1, h2, h3, h4 {
-      font-family: 'Source Sans Pro', sans-serif;
-    }
-    kbd {
-      color: #121212;
-    }
-    blockquote {
-      color: #888;
-      border: 2px solid #333;
-      padding: 10px;
-      background-color: #ccc;
-    }
-
-    table.custom-tbl {
-      border: 1px solid;
-    }
-
-    table.custom-tbl th {
-      border: 1px solid;
-      background-color: rgb(99, 209, 209);
-    }
-
-    table.custom-tbl td {
-      border: 1px solid;
-      background-color: #f1e686a8;
-    }
-  </style>
-
-  <title>CS 184 Mesh Editor</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <!-- Not using below due to lacking bold fontfaces -->
-  <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro|Source+Sans+Pro:400,700" rel="stylesheet"> -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700" rel="stylesheet" />
-
-  <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']]
-      }
-    };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-  </script>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>NeRF - Neural Radiance Fields</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 </head>
+
 
 <body>
 
-<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
-<h1 align="middle">Project 4: Cloth Simulator</h1>
-<h2 align="middle">Anthony Zhang and Andrew Huang, CS184</h2>
-<h2 align="middle">https://antoniomacaronio.github.io/proj-webpage-template/proj4/index.html</h2>
+<h1 align="middle">CS 180: Intro to Computer Vision and Computational Photography, Fa2023</h1>
+<h1 align="middle">Project 5: Neural Radiance Fields</h1>
+<h2 align="middle">ANTHONY ZHANG, 3036218223</h2>
 
 <br><br>
 
 <div>
-  <h2 align="middle">Overview</h2>
-  <p>Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
 
-  <p>In this project, we created a cloth simulation based on springs and pointmasses, and styled them with various shaders. The simulation is based off a 2D grid of springs and pointmasses which apply forces on different sections of the cloth through Hooke’s Law, and calculates the next frames with Verlet Integration. There was also a self-collision implementation to have the cloth not pass through itself, and the shaders were implemented by using various models of light calculation from lecture, such as Blinn-Phong, Mirror, and Texture Mapping.</p>
-</div>
-
-<a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-1">
-  <h2 align="middle">Part 1: Masses and springs</h2>
-</a>
-<blockquote><b>
-  Take some screenshots of <i>scene/pinned2.json</i> from a viewing angle where you can clearly see the cloth wireframe
-  to show the structure of your point masses and springs.
-</b></blockquote>
-
+<h2 align="middle">Part 1: Fitting an Image Network</h2>
+<p>
+  To learn the Image function with a neural network, I used the network described in the spec. The architecture is pictured below:
+</p>
 <div align="middle">
-  <table style="width:100%">
-    <tr align="center">
+  <table style="width=100%">
+  <tr>
       <td>
-        <img src="4part1image1.png" align="middle" width="500vw" />
+      <img src="images/image-arch.png" align="middle" width="300px"/>
+      <figcaption align="middle">Model Architecture</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+<p> 
+  I trained the network for 1500 iterations with a batch size of 10k, and backpropped the model with the Adam optimizer. 
+  I experimented with the hyperparameters L (the number of frequency levels for the positional encoder) and the learning rate.
+  Pictured below are the results of my model pictured from iterations [1, 10, 50, 100, 150, 200, 300, 500, 1000, 1500]
+</p> 
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+        <td>
+        <img src="images/fox1.png" align="middle" width="700px"/>
+        <figcaption align="middle">Learning Rate: 1e-2 , Number of Frequency Levels: 20</figcaption>
+        </td>
+        <td>
+          <img src="images/bestfox.png" align="middle" width="300px"/>
+          <figcaption align="middle">Final Iteration Produced</figcaption>
+        </td>
+    </tr>
+    <tr>
+      <td>
+      <img src="images/fox2.png" align="middle" width="700px"/>
+      <figcaption align="middle">Learning Rate: 1e-2 , Number of Frequency Levels: 5</figcaption>
+      </td>
+      <td>
+        <img src="images/bestfox2.png" align="middle" width="300px"/>
+        <figcaption align="middle">Final Iteration Produced</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <img src="images/fox3.png" align="middle" width="700px"/>
+      <figcaption align="middle">Learning Rate: 1e-4 , Number of Frequency Levels: 20</figcaption>
+      </td>
+      <td>
+        <img src="images/bestfox3.png" align="middle" width="300px"/>
+        <figcaption align="middle">Final Iteration Produced</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <img src="images/fox4.png" align="middle" width="700px"/>
+      <figcaption align="middle">Learning Rate: 1e-4 , Number of Frequency Levels: 5</figcaption>
+      </td>
+      <td>
+        <img src="images/bestfox4.png" align="middle" width="300px"/>
+        <figcaption align="middle">Final Iteration Produced</figcaption>
       </td>
     </tr>
   </table>
 </div>
-
-
-<blockquote><b>
-  Show us what the wireframe looks like (1) without any shearing constraints,
-  (2) with only shearing constraints, and (3) with all constraints.
-</b></blockquote>
-
+<p>
+  We can see that from the above results, a lower learning rate does not allow the model enough iterations to learn the full image function. 
+  Likewise, less frequency layers means the model has more trouble generating sharper edges and high frequencies in the image function.
+  In general, when the hyperparameter L is smaller, the image has more blur and in general, a smoother appearence. When both learning rate and L are small, the results are the poorest.
+</p>
+<br>
+<p>
+  Here is a picture of the original fox photo, as well as the best output picture my model learned after 1500 iterations with the optimal hyperparameters, and the PSNR values over time.
+</p>
 <div align="middle">
-  <table style="width:100%">
-    <tr align="center">
+  <table style="width=100%">
+  <tr>
       <td>
-        <img src="4part1image2.png" align="middle" width="650px" />
-        <figcaption>No shearing constraints</figcaption>
+      <img src="images/og_fox.jpg" align="middle" width="300px"/>
+      <figcaption align="middle">Original Fox Photo</figcaption>
       </td>
-    </tr>
-    <tr align="center">
       <td>
-        <img src="4part1image3.png" align="middle" width="650px" />
-        <figcaption>Only shearing constraints</figcaption>
+        <img src="images/bestfox.png" align="middle" width="300px"/>
+        <figcaption align="middle">Best Fox Output From Above</figcaption>
       </td>
-    </tr>
-    <tr align="center">
       <td>
-        <img src="4part1image4.png" align="middle" width="650px" />
-        <figcaption>All constraints</figcaption>
+        <img src="images/fox_PSNR.png" align="middle" width="300px"/>
+        <figcaption align="middle">PSNR Graph</figcaption>
       </td>
-    </tr>
+  </tr>
+  </table>
+</div>
+<p>
+  I trained another image network, this time on a beaver! The bottom shows the original beaver photo, the best one generated by my model, and then a PSNR graph as well as intermediate iteractions.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/Beaver.jpg" align="middle" width="300px"/>
+      <figcaption align="middle">Original Beaver Photo</figcaption>
+      </td>
+      <td>
+        <img src="images/bestbeaver.png" align="middle" width="300px"/>
+        <figcaption align="middle">Best Beaver Output From Above</figcaption>
+      </td>
+      <td>
+        <img src="images/beaver_psnr.png" align="middle" width="300px"/>
+        <figcaption align="middle">PSNR Graph</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/beaver_iters.png" align="middle" width="900px"/>
+      <figcaption align="middle">Beaver Training Iterations</figcaption>
+      </td>
+  </tr>
   </table>
 </div>
 
 
 
-<a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-2">
-  <h2 align="middle">Part 2: Simulation via numerical integration</h2>
-</a>
-<blockquote><b>
-  Experiment with some the parameters in the simulation.
-  To do so, pause the simulation at the start with <kbd>P</kbd>, modify the values of interest, and then resume by pressing <kbd>P</kbd> again.
-  You can also restart the simulation at any time from the cloth's starting position by pressing <kbd>R</kbd>.
-  <br />
-  <small>
-    Describe the effects of changing the spring constant <code>ks</code>; how does the cloth behave from start to rest with a very low <code>ks</code>?
-    A high <code>ks</code>?
-  </small>
-</b></blockquote>
-
+<h2 align="middle">Part 2: Neural Radiance Fields (3D)</h2>
+<p> 
+    In this part, I began by implementing pixel_to_camera and then pixel_to_ray, methods which allow me to obtain the rays from an image and then trace them out into the scene. 
+    By estimating their color through a volume rendering function, we were able to compare the ray color to the actual pixel in the image, which allowed us to backprop and have the model learn the scene.
+    Then, I settled on the model architecture described in the NeRF paper and generated the rays with perturbed points with my RaysData implementation. Below are some pictures of the Rays Dataset.
+</p>    
 <div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part2image1.png" align="middle" width="500px" />
-        <figcaption>ks = 100 N/m (low ks)</figcaption>
-      </td>
+    <table style="width=100%">
+    <tr>
+        <td>
+        <img src="images/sample_rays.png" align="middle" width="450px"/>
+        <figcaption align="middle">3D model of 100 randomly sampled rays from the cameras</figcaption>
+        </td>
+        <td>
+        <img src="images/nerf-model-arch.png" align="middle" width="450px"/>
+        <figcaption align="middle">NeRF Model Architecture</figcaption>
+        </td>
     </tr>
-    <tr align="center">
+    </table>
+</div>
+<p>
+  Now, I sampled 10,000 rays and their corresponding pixel value and fed that as a batch into the NeRF model. I continued training below to get the following results.
+</p>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+    <td>
+      <img src="images/validation500.png" align="middle" width="900px"/>
+      <figcaption align="middle">After 500 iterations, PSNR of 20</figcaption>
+    </td>
+  </tr>
+  <tr>
       <td>
-        <img src="4part2image2.png" align="middle" width="500px" />
-        <figcaption>high ks value (50,000 N/m)</figcaption>
+      <img src="images/validation1000.png" align="middle" width="900px"/>
+      <figcaption align="middle">Validation Images after 1000 iterations with a PSNR of 20</figcaption>
       </td>
-    </tr>
+
+  </tr>
+  </table>
+</div>
+<br>
+<br>
+<br>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/lego1.gif" align="middle" width="450px"/>
+      <figcaption align="middle">After 500 iterations, PSNR of 14</figcaption>
+      </td>
+      <td>
+      <img src="images/lego_bulldozer.gif" align="middle" width="450px"/>
+      <figcaption align="middle">After 1000 iterations, PSNR of 20</figcaption>
+      </td>
+  </tr>
   </table>
 </div>
 
-<p>
-
-  With a low ks value such as 100 N/m, the cloth looks very saggy - it seems to be much more ‘stretchable’ and more ‘malleable’ in the sense that the middle section has more crease from gravity pulling down on the main part of cloth. The cloth appears to hold itself not as rigidly as the one with 5000 N/m.
-
-  With a higher ks value, such as ks = 50000 N/m, the cloth appears to be more taut and more uniform towards the bottom (no curling at the corners). Notice at the top of the cloth, it does not sag as deeply as it seems the cloth holds itself together more rigidly. Likewise, there are not as many creases from the hanging which leads to an overall more uniform colored appearance.
-</p>
-
-
-<blockquote><b>
-  <small>
-    What about for <code>density</code>?
-  </small>
-</b></blockquote>
-
+<h2 align="middle">Bells and Whistles</h2>
+<p> I made a custom nerf with nerf studio, it is a scene of a basket with some chopsticks inside a restaurant, and I think it turned out kinda blurry cause of my poor capturing skills.</p>
 <div align="middle">
-  <table style="width:100%">
-    <tr align="center">
+  <table style="width=100%">
+  <tr>
       <td>
-        <img src="4part2image3.png" align="middle" width="500px" />
-        <figcaption>high density (150 g/cm^2)</figcaption>
+      <img src="images/nerfstudio.gif" align="middle" width="450px"/>
+      <figcaption align="middle">Nerf Studio Render</figcaption>
       </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part2image4.png" align="middle" width="500px" />
-        <figcaption>low density (1.5 g/cm^2)</figcaption>
-      </td>
-    </tr>
+  </tr>
   </table>
 </div>
-
-<p>
-  When the density of the cloth is increased, the cloth sags much more heavily. The example below shows an image of the cloth with density = 150g/cm^2 and the dip in the middle really stretches the cloth to its limit. There are many visible creases at the top and towards the bottom, the corners’ curling curvature to balance out the unevenness of the crease becomes quite apparent because the cloth is so heavy.
-
-  When the density of the cloth is decreased, the cloth doesn’t sag much at all and the simulation makes it appear much ‘lighter’. The crease is much less visible and towards the bottom, there is almost no curling at the corners and the color is much more uniform as a result of this increased evenness. In the following picture, the cloth is depicted with a density of 1.5g/cm^2.
-</p>
-
-
-<blockquote><b>
-  <small>
-    What about for <code>damping</code>?
-  </small>
-</b></blockquote>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part2image5.png" align="middle" width="500px" />
-        <figcaption>low damping</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part2image6.png" align="middle" width="500px" />
-        <figcaption>high damping</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<p>
-  When the damping constant is very low, the cloth oscillates a lot when falling and takes a long time to come to a stable, still position. It has a lot of vibration in it that takes a while to settle, which gives the surface an undulating, wavy appearance and it’s not as smooth or even during the falling motion. Here, the damping factor was set to ~0.07, and the image shows that the fabric falls fast to a point where the bottom of the fabric is behind the two pinned points and oscillates back and forth for a while like a pendulum would.
-
-  When the damping constant is high, the cloth falls slowly and there is almost no unevenness in the fabric. Since it falls slowly, the fabric never falls behind the two pinned points and doesn’t oscillate like it did with a low damping constant; additionally, the surface of the cloth is much more uniform. Here, the damping factor was set to 0.54.
-</p>
-
-
-
-<blockquote><b>
-  Show us a screenshot of your shaded cloth from <i>scene/pinned4.json</i> in its final resting state!
-  If you choose to use different parameters than the default ones, please list them.
-</b></blockquote>
-
-This cloth uses default parameters:
-
-<div align="middle">
-  <img src="4part2image7.png" align="middle" width="100%" />
-</div>
-
-
-
-<a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-3">
-  <h2 align="middle">Part 3: Handling collisions with other objects</h2>
-</a>
-<blockquote><b>
-  Show us screenshots of your shaded cloth from <i>scene/sphere.json</i> in its final resting state
-  on the sphere using the default <code>ks = 5000</code> as well as with <code>ks = 500</code> and <code>ks = 50000</code>.
-</b></blockquote>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part3image2.png" align="middle" width="300vw" />
-        <figcaption>$\text{ks} = 500$</figcaption>
-      </td>
-      <td>
-        <img src="4part3image1.png" align="middle" width="300vw" />
-        <figcaption>Initial configuration ($\text{ks} = 5,000$)</figcaption>
-      </td>
-      <td>
-        <img src="4part3image3.png" align="middle" width="300vw" />
-        <figcaption>$\text{ks} = 50,000$</figcaption>
-      </td>
-      <td>
-    </tr>
-  </table>
-</div>
-
-
-<blockquote><b>
-  <small>Describe the differences in the results.</small>
-</b></blockquote>
-
-<p>
-  The cloth’s appearance as it rests on the sphere changes depending on its ks value very intuitively to its behavior in task 2. Earlier, we described that with a higher ks value, the cloth is more rigid and appears more ‘taut’ in how it bends and folds. This can be seen as the cloth with the highest ks value of 50,000 N/m doesn’t bend around the ball and sag as much as the others. Conversely, the cloth with a ks value of 500 N/m appears much more soft and sags greatly, which allows it to wrap around the ball much more and the corners droop straight down in the direction of gravity; additionally, there are much more wrinkles and creases has the cloth warps to the shape of the underlying sphere. The cloth with a ks value of 5000 N/m is somewhat in between these two, having somewhat droopy corners but also more rigidity and tightness in its texture.
-</p>
-
-
-<blockquote><b>
-  Show us a screenshot of your shaded cloth lying peacefully at rest on the plane.
-  If you haven't by now, feel free to express your colorful creativity with the cloth!
-  (You will need to complete the shaders portion first to show custom colors.)
-</b></blockquote>
-
-<div align="middle">
-  <img src="4part3image4.png" align="middle" width="100%" />
-</div>
-
-
-
-<a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-4">
-  <h2 align="middle">Part 4: Handling self-collisions</h2>
-</a>
-
-<blockquote><b>
-  Show us at least 3 screenshots that document how your cloth falls and folds on itself,
-  starting with an early, initial self-collision
-  and ending with the cloth at a more restful state (even if it is still slightly bouncy on the ground).
-</b></blockquote>
-
-
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part4image1.png" align="middle" width="500vw" />
-        <figcaption>Pic 1 - Early initial self collision</figcaption>
-      </td>
-      <td>
-        <img src="4part4image2.png" align="middle" width="500vw" />
-        <figcaption>Pic 2 - almost on the ground</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part4image3.png" align="middle" width="500vw" />
-        <figcaption>Pic 3 - almost settled, little shifting</figcaption>
-      </td>
-      <td>
-        <img src="4part4image4.png" align="middle" width="500vw" />
-        <figcaption>Pic 4 - final resting position</figcaption>
-      </td>
-      <td>
-    </tr>
-  </table>
-</div>
-
-As we can see, the cloth begins pretty crumpled, but sort of rolls out.
-
-<blockquote><b>
-  Vary the <code>density</code> as well as <code>ks</code>
-
-  and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.
-</b></blockquote>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="real4part4image5.png" align="middle" width="500px" />
-        <figcaption>$\text{density} = 1.5$ almost immediately after dropping</figcaption>
-      </td>
-      <td>
-        <img src="real4part4image6.png" align="middle" width="500px" />
-        <figcaption>$\text{density} = 1.5$ after a little more time</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="real4part4image7.png" align="middle" width="500px" />
-        <figcaption>$\text{density} = 150$ almost immediately after dropping</figcaption>
-      </td>
-      <td>
-        <img src="real4part4image8.png" align="middle" width="400px" />
-        <figcaption>$\text{density} = 150$ after a little more time</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="real4part4image9.png" align="middle" width="500px" />
-        <figcaption>$\text{ks} = 50$ almost immediately after dropping</figcaption>
-      </td>
-      <td>
-        <img src="real4part4image10.png" align="middle" width="500px" />
-        <figcaption>$\text{ks} = 50$ after a little more time</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="real4part4image11.png" align="middle" width="500px" />
-        <figcaption>$\text{ks} = 50,000$ almost immediately after dropping</figcaption>
-      </td>
-      <td>
-        <img src="real4part4image12.png" align="middle" width="500px" />
-        <figcaption>$\text{ks} = 50,000$ after a little more time</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<p>
-  Increased density seems to be making the cloth more flattened and close to the ground, while a decreased density seems to be making the force pushing the cloth away from itself a bit more prevalent. This makes sense intuitively because with increased density, a cloth becomes heavier, and thus, it flattens itself out more because it weighs more onto itself, and a decreased density means that the cloth is lighter, so the spring forces within can exert more acceleration, leading to a more flat shape (spring equilibrium state). With similar reasoning, we can observe that an increased ks seems to be making the cloth “flatten” more quickly as the spring forces are greater, instead of scrunching up and then slowly getting to a resting state in the example with a lower spring constant.
-</p>
-
-
-
-<a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-5">
-  <h2 align="middle">Part 5: Cloth Sim</h2>
-</a>
-
-<blockquote><b>
-  Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.
-</b></blockquote>
-
-<p>
-  A shader program takes different parts on objects, like cloths and spheres, and through a variety of methods, including shading equations from various light sources and calling reference textures, determines what color this point on the object should be. We begin with a vertex shader, which considers reference points on each object and can manipulate their positions. Then, we afterwards go through a fragment shader, which actually decides the color that each portion of the object should be. It is through the combination of these processes by which we know where and what color certain objects are.
-</p>
-
-
-<blockquote><b>
-  Explain the Blinn-Phong shading model in your own words.
-  Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot only outputting the specular component, and one using the entire Blinn-Phong model.
-</b></blockquote>
-
-<p>
-  The Blinn-Phong shading model considers a combination of diffuse lighting as well as more reflective lighting that considers the half angle between the light source to object and camera to object vectors. In this particular example, we start by giving each point a tad bit of lighting. Then, for every point on the object, we consider its normal vector, and then shade it in accordance with the dot product of this with the light vector and this half-angle vector, with both values scaled by constants and by the inverse of the squared distance afterwards. There is one other interesting aspect of the Blinn-Phong model, which is that, if the value is nonnegative, we take dot(n,h) to a large exponent p, which we chose in our particular case to be 100. This way, we really separate our half-angles that are not that close to normal to the object.
-</p>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part5image1.png" align="middle" width="400px" />
-        <figcaption>Ambient component only</figcaption>
-
-      </td>
-      <td>
-        <img src="4part5image2.png" align="middle" width="400px" />
-        <figcaption>Diffuse component only</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part5image3.png" align="middle" width="400px" />
-        <figcaption>Specular component only</figcaption>
-      </td>
-      <td>
-        <img src="4part5image4.png" align="middle" width="400px" />
-        <figcaption>Complete Blinn-Phong model</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
-
-
-<blockquote><b>
-  Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in <code>/textures/</code>.
-</b></blockquote>
-
-<div align="middle">
-  <img src="4part5image5.png" align="middle" width="100%" />
-</div>
-
-
-<blockquote><b>
-  Show a screenshot of bump mapping on the cloth and on the sphere.
-  Show a screenshot of displacement mapping on the sphere.
-  Use the same texture for both renders.
-  You can either provide your own texture or use one of the ones in the textures directory,
-  BUT choose one that's not the default <code>texture_2.png</code>.
-  Compare the two approaches and resulting renders in your own words.
-  Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using <code>-o 16 -a 16</code> and then <code>-o 128 -a 128</code>.
-</b></blockquote>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part5image6.png" align="middle" width="400vw" />
-        <figcaption>Bump Cloth and Sphere (No Specified Arguments)</figcaption>
-      </td>
-      <td>
-        <img src="4part5image7.png" align="middle" width="400vw" />
-        <figcaption>Bump Cloth on Sphere (No Specified Arguments)</figcaption>
-      </td>
-      <td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part5image8.png" align="middle" width="400vw" />
-        <figcaption>Displacement Sphere (No Specified Arguments)</figcaption>
-      </td>
-      <td>
-        <img src="4part5image9.png" align="middle" width="400vw" />
-        <figcaption>Displacement Cloth on Sphere (No Specified Arguments)</figcaption>
-      </td>
-      <td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part5image10.png" align="middle" width="400vw" />
-        <figcaption>Bump (16, 16 arguments)</figcaption>
-      </td>
-      <td>
-        <img src="4part5image11.png" align="middle" width="400vw" />
-        <figcaption>Displacement (16, 16 Arguments)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="4part5image12.png" align="middle" width="400vw" />
-        <figcaption>Bump (128, 128 arguments)</figcaption>
-      </td>
-      <td>
-        <img src="4part5image16.png" align="middle" width="400vw" />
-        <figcaption>Displacement (128, 128 Arguments)</figcaption>
-      </td>
-      <td>
-    </tr>
-  </table>
-</div>
-
-<p>
-  Bump shading and displacement shading have the same underlying fragment shader but different vertex shaders. They both take a texture and act like changes in color on the image reflect a difference in surface normal. However, displacement shading takes this a step further and genuinely also changes the vertex positions of each object in accordance with the textures. Therefore, both of them at least vaguely have shading that emulates the image, in a sense, but displacement matching also changes the locations of the portions of the sphere and cloth (and indeed the surface normal), before undergoing the same fragment shader, which further alters the surface normal before calculating the shading.
-</p>
-
-
-<blockquote><b>
-  Show a screenshot of your mirror shader on the cloth and on the sphere.
-</b></blockquote>
-
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="4part5image13.png" align="middle" width="400vw" />
-        <figcaption>Mirror Shader on the Sphere</figcaption>
-      </td>
-      <td>
-        <img src="4part5image14.png" align="middle" width="400vw" />
-        <figcaption>Mirror Shader on the Cloth</figcaption>
-      </td>
-      <td>
-        <img src="4part5image15.png" align="middle" width="400vw" />
-        <figcaption>Mirror Shader on both Cloth and Sphere</figcaption>
-      </td>
-      <td>
-    </tr>
-  </table>
-</div>
-
-
-<blockquote><b>
-  Explain what you did in your custom shader, if you made one.
-</b></blockquote>
-
-<p>
-  We decided to be a bit creative and try to let the time affect the color! In order to accomplish this, we added an extra attribute in ClothSimulator::drawPhong for the time in seconds modulo 10, Then, we multiply the rgb values by different values depending on the current internal clock time in order to get a colored tint on our objects. This way, now the cloth kind of flickers sort of like Christmas lights. To see this, please visit our website at https://antoniomacaronio.github.io/proj-webpage-template/proj4/index.html to see the animation of our shader!
-</p>
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="extra-credit.gif" align="middle" width="700vw" />
-        <figcaption>Custom Shader on the Cloth</figcaption>
-      </td>
-
-    </tr>
-  </table>
-</div>
-
-
-<h2 align="middle">Contributions</h2>
-<p>
-  Anthony worked on all the tasks 1-4 and the writeup for them.
-  Andrew worked on task 5 and the extra credit. Together, we spent a lot of time brainstorming how to approach the project, and worked together on the html and writing up all the images.
-</p>
-
-
-
-<h2 align="middle">Mesh Competition Extra Credit (optional)</h2>
-<blockquote><b>
-  The final (optional) part for the mesh competition is where you have the opportunity to be creative and individual,
-  so be sure to provide a good description of what you were going for, what you did, and how you did it.
-</b></blockquote>
-
-<p>
-  N/A
-</p>
-
-
-
-<h2 align="middle">Extra Credit (optional)</h2>
-<blockquote><b>
-  If you implemented any additional technical features for the cloth simulation,
-  clearly describe what you did and provide screenshots that illustrate your work.
-  If it is an improvement compared to something already existing on the cloth simulation,
-  compare and contrast them both in words and in images.
-</b></blockquote>
-
-<p>
-  N/A
-</p>
-
 </body>
 </html>
