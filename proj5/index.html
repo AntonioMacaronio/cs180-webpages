@@ -159,7 +159,8 @@
 <p> 
     In this part, I began by implementing pixel_to_camera and then pixel_to_ray, methods which allow me to obtain the rays from an image and then trace them out into the scene. 
     By estimating their color through a volume rendering function, we were able to compare the ray color to the actual pixel in the image, which allowed us to backprop and have the model learn the scene.
-    Then, I settled on the model architecture described in the NeRF paper and generated the rays with perturbed points with my RaysData implementation. Below are some pictures of the Rays Dataset.
+    Then, I settled on the model architecture described in the NeRF paper and generated the rays with perturbed points with my RaysData implementation. 
+    Below are some pictures of the Rays Dataset and images describing my implementation.
 </p>    
 <div align="middle">
     <table style="width=100%">
@@ -175,11 +176,29 @@
     </tr>
     </table>
 </div>
+<br>
 <p>
-  Now, I sampled 10,000 rays and their corresponding pixel value and fed that as a batch into the NeRF model. I continued training below to get the following results.
+  Once I was able to construct the RaysData which returned the rays constructed in the sphere image and retrieved their colors as labels, I had a valid dataset to train on.
+  I then sampled 10,000 rays and their corresponding pixel value and fed that as a batch into the NeRF model. I continued training below to get the following results. I had a lot of trouble getting above 20 PSNR but the image quality was not terrible and you can still make out a model.
+</p>
+<br>
+<p>
+  Below shows the validation images while training and their respective PSNR values.
 </p>
 <div align="middle">
   <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/validation100.png" align="middle" width="900px"/>
+        <figcaption align="middle">After 500 iterations, PSNR of 16</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="images/validation200.png" align="middle" width="900px"/>
+        <figcaption align="middle">After 200 iterations, PSNR of 18</figcaption>
+      </td>
+    </tr>
   <tr>
     <td>
       <img src="images/validation500.png" align="middle" width="900px"/>
@@ -189,26 +208,40 @@
   <tr>
       <td>
       <img src="images/validation1000.png" align="middle" width="900px"/>
-      <figcaption align="middle">Validation Images after 1000 iterations with a PSNR of 20</figcaption>
+      <figcaption align="middle">Validation Images after 1000 iterations with a PSNR of 22</figcaption>
       </td>
-
   </tr>
   </table>
 </div>
-<br>
 <br>
 <br>
 <div align="middle">
   <table style="width=100%">
   <tr>
       <td>
-      <img src="images/lego1.gif" align="middle" width="450px"/>
+      <img src="images/psnr_final.png" align="middle" width="450px"/>
+      <figcaption align="middle">Graph of PSNR vs. Iteractions</figcaption>
+      </td>
+  </tr>
+  </table>
+</div>
+<br>
+<br>
+<div align="middle">
+  <table style="width=100%">
+  <tr>
+      <td>
+      <img src="images/lego1.gif" align="middle" width="330px"/>
       <figcaption align="middle">After 500 iterations, PSNR of 14</figcaption>
       </td>
       <td>
-      <img src="images/lego_bulldozer.gif" align="middle" width="450px"/>
-      <figcaption align="middle">After 1000 iterations, PSNR of 20</figcaption>
+      <img src="images/lego_bulldozer.gif" align="middle" width="330px"/>
+      <figcaption align="middle">After 750 iterations, PSNR of 20</figcaption>
       </td>
+      <td>
+        <img src="images/lego3.gif" align="middle" width="330px"/>
+        <figcaption align="middle">After 1000 iterations, PSNR of 22</figcaption>
+        </td>
   </tr>
   </table>
 </div>
