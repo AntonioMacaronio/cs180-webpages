@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS180 Final Project</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 180: Final Project, Fa2023</h1>
+<h2 align="middle">ANTHONY ZHANG, 3036218223</h2>
+
+<br><br>
+
+<div>
+<h1 align="middle">Poor Man's Augmented Reality</h2>
+<h2 align="middle">Overview and Explanation</h2>
+<p> 
+    The goal was to add a virtual cube by smartly computing the camera projection matrices for each frame and converting the mesh's world coordinates in image coordinates to draw on.
+    <br><br>
+    I started off with the following video I made of a shoebox wrapped with marked paper, which can be visible below.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/optimizied_original.gif" align="middle" width="450px"/>
+              <figcaption align="middle">Original Video of Shoebox with Grid Pattern</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p>
+    The next step was to accurately track the coordinate lattice points on the shoebox to calculate the camera's projection matrices.
+    The world coordinates of the shoebox's lattice points can be labeled by defining the world axes as the edges of the shoebox.
+    Only for the first frame of the video, I manually labeled the image coordinates of each of the shoebox's lattice points.
+</p>
+
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td style="padding-right: 35px;">
+              <img src="images/first_frame.jpg" align="middle" height="750px"/>
+              <figcaption align="middle">First Frame of Shoebox Marked with Coordinate Axis</figcaption>
+            </td>
+            <td style="padding-left: 35px;">
+                <img src="images/first_frame_labels.png" align="middle" height="750px"/>
+                <figcaption align="middle">Labeled Image Coordinates of Lattice Points Visualization</figcaption>
+              </td>
+        </tr>
+    </table>
+</div>
+<br>
+<p>
+    To get the image coordinates of each lattice point for the rest of the frames,
+    I used a CRST tracker to track these corners. This tracker was recomputing the bounding boxes for every frame and allowed me compute the projection matrices based off the following system.
+</p>
+
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/optimized_tracking.gif" align="middle" height="350px"/>
+              <figcaption align="middle">CRST-Tracked Bounding Boxes</figcaption>
+            </td>
+            <td>
+                <img src="images/projection_equation.png" align="middle" height="350px"/>
+                <figcaption align="middle">Camera Projection Matrix Estimation Equations</figcaption>
+              </td>
+        </tr>
+    </table>
+</div>
+<br><br>
+<h2 align="middle">Final Poor Man's Results!</h2>
+<p>
+    Finally, to draw the cube mesh from the scene into the image virtually, it was a matter of using the projection matrices the find the image coordinates of the meshs' keypoints in world space.
+    This led to final following results:
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/optimized_augmented.gif" align="middle" height="600px"/>
+              <figcaption align="middle">Augmented Reality</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+<br><br><br><br>
+
+
+
+<h1 align="middle">Light Field Cameras</h2>
+<h2 align="middle">Overview and Explanation</h2>
+Light Field Cameras allow us to refocus an image after capturing a photo because the camera records the ray direction. This additional information allows for a variety of post-processing effects, including depth refocusing and aperture adjustment, which are unique features of light field photography.
+<br><br>
+This is achieved using an array of micro-lenses placed in front of the image sensor.
+Each micro-lens captures a slightly different perspective of the scene, creating a grid of sub-images on the sensor. This grid of perspectives is known as a light field, and it contains information about the direction of light rays at each point in the scene.
+<br><br>
+I used Stanford's Light Field Archive to showcase these computations, where a 17x17 grid of cameras were taking pictures of a chessboard scene, each acting as a microlens.
+<br>
+
+<h2 align="middle">Depth Refocusing</h2>
+<p>
+    This is achieved by computationally simulating the effects of changing the focus distance. 
+    Each pixel in the light field contains information about the light rays coming from different depths. 
+    By adjusting the focus digitally, the software can selectively combine the rays to create a sharp image at the desired depth, effectively changing the focus point after capturing the image.
+    The results are depicted below.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/refocus_animation.gif" align="middle" width="750px"/>
+              <figcaption align="middle">Changing Focus by Varying Hyperparamter Alpha: [-1.0, -0.8, -0.6, -0.4, -0.2, 0, 0.2] </figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h2 align="middle">Aperture Adjustment</h2>
+<p>
+    Because the camera (micro-lens) array captures light rays from different depths, aperture adjustment is computed by adjusting the weighting and combination of rays captured by the micro-lenses to achieve the desired depth of field effect.
+    The results are depicted below.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/reap_animation.gif" align="middle" width="750"/>
+              <figcaption align="middle">Modifying Depth of Field by Varying Aperature Radius: [0, 10, 15, 20, 30, 80]</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h2 align="middle">Bells and Whistles</h2>
+<p>
+    I tried to do some light field capture from own photos, but they did not turn out so great. I must have miscalculated the real world coordinates, but there was also a lot of weird colors coming up - the yellow banana picture I took somehow became all blue, and all refocusing efforts disappeared.
+</p>
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+                <img src="images/IMG_8222.jpg" align="middle" width="150px"/>
+            </td>
+            <td>
+                <img src="images/IMG_8223.jpg" align="middle" width="150px"/>
+            </td>
+            <td>
+                <img src="images/IMG_8224.jpg" align="middle" width="150px"/>
+            </td>
+            <td>
+                <img src="images/IMG_8225.jpg" align="middle" width="150px"/>
+            </td>
+            <td>
+                <img src="images/IMG_8226.jpg" align="middle" width="150px"/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div align="middle">
+    <table style="width=100%">
+        <tr>
+            <td>
+              <img src="images/lightfield_banana.gif" align="middle" width="766px"/>
+              <figcaption align="middle">Modifying Depth of Field by Varying Aperature Radius: [0, 10, 15, 20, 30, 80]</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>
