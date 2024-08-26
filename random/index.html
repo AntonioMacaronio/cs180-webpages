@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Comparison Slider</title>
+    <title>Multiple Video Comparisons (Stacked)</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .comparison-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
         }
         .container {
             position: relative;
-            width: 800px;
-            height: 450px;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
             overflow: hidden;
         }
         video {
@@ -27,12 +32,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        #video1 {
-            clip-path: inset(0 100% 0 0);
-        }
-        #video2 {
-            clip-path: inset(0 0 0 100%);
         }
         .slider {
             position: absolute;
@@ -63,18 +62,25 @@
             font-size: 20px;
             color: #333;
         }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <h2>Nerfacto Comparison</h2>
-    <div class="container">
-        <video id="video1" autoplay loop muted>
-            <source src="nerfacto-campanile_golden_4k_200imgs-mainBranch.mp4" type="video/mp4">
-        </video>
-        <video id="video2" autoplay loop muted>
-            <source src="nerfacto-campanile_golden_4k_2000imgs.mp4" type="video/mp4">
-        </video>
-        <div class="slider"></div>
+    <div class="comparison-container">
+        <h2>Nerfacto Comparison</h2>
+        <div class="container" id="container1">
+            <video id="video1" autoplay loop muted>
+                <source src="nerfacto-campanile_golden_4k_200imgs-mainBranch.mp4" type="video/mp4">
+            </video>
+            <video id="video2" autoplay loop muted>
+                <source src="nerfacto-campanile_golden_4k_2000imgs.mp4" type="video/mp4">
+            </video>
+            <div class="slider"></div>
+        </div>
     </div>
 
     <div class="comparison-container">
@@ -91,43 +97,49 @@
     </div>
 
     <script>
-        const container = document.querySelector('.container');
-        const slider = document.querySelector('.slider');
-        const video1 = document.getElementById('video1');
-        const video2 = document.getElementById('video2');
+        function setupComparison(containerId, video1Id, video2Id) {
+            const container = document.getElementById(containerId);
+            const slider = container.querySelector('.slider');
+            const video1 = document.getElementById(video1Id);
+            const video2 = document.getElementById(video2Id);
 
-        let isDragging = false;
+            let isDragging = false;
 
-        function updateSliderPosition(x) {
-            const rect = container.getBoundingClientRect();
-            let position = (x - rect.left) / rect.width;
-            position = Math.max(0, Math.min(position, 1));
-            
-            slider.style.left = `${position * 100}%`;
-            video1.style.clipPath = `inset(0 ${(1 - position) * 100}% 0 0)`;
-            video2.style.clipPath = `inset(0 0 0 ${position * 100}%)`;
+            function updateSliderPosition(x) {
+                const rect = container.getBoundingClientRect();
+                let position = (x - rect.left) / rect.width;
+                position = Math.max(0, Math.min(position, 1));
+                
+                slider.style.left = `${position * 100}%`;
+                video1.style.clipPath = `inset(0 ${(1 - position) * 100}% 0 0)`;
+                video2.style.clipPath = `inset(0 0 0 ${position * 100}%)`;
+            }
+
+            slider.addEventListener('mousedown', () => {
+                isDragging = true;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    updateSliderPosition(e.clientX);
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            container.addEventListener('click', (e) => {
+                updateSliderPosition(e.clientX);
+            });
+
+            // Initial slider position
+            updateSliderPosition(container.getBoundingClientRect().left + container.offsetWidth / 2);
         }
 
-        slider.addEventListener('mousedown', () => {
-            isDragging = true;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                updateSliderPosition(e.clientX);
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        container.addEventListener('click', (e) => {
-            updateSliderPosition(e.clientX);
-        });
-
-        // Initial slider position
-        updateSliderPosition(container.getBoundingClientRect().left + container.offsetWidth / 2);
+        // Setup both comparisons
+        setupComparison('container1', 'video1', 'video2');
+        setupComparison('container2', 'video3', 'video4');
     </script>
 </body>
 </html>
