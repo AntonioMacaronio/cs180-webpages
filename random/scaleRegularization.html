@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Video Comparisons (Stacked)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .comparison-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+        }
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: white;
+            cursor: col-resize;
+            z-index: 10;
+        }
+        .slider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .slider::after {
+            content: '⇔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="comparison-container">
+        <h2>Scale Regularization Comparison</h2>
+        <p>
+            Both videos are splatfactos trained from 1000 4k images. Using 8 workers with no downscaling in the training process took 23 minutes to train. 
+            The left video has scale regularization (from PhysGaussian) turned off, while the right has scale regularization turned on.
+        </p>
+        <div class="container" id="container3">
+            <video id="video5" autoplay loop muted>
+                <source src="splatfacto-haas_upper_entrance_1k-dataloaded_8workers_noDownscaling.mp4" type="video/mp4">
+            </video>
+            <video id="video6" autoplay loop muted>
+                <source src="splatfacto-haas_upper_entrance_1k-dataloaded_8workers-noDownscaling-scaleRegularization.mp4" type="video/mp4">
+            </video>
+            <div class="slider"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container" id="container4">
+        <video id="video7" autoplay loop muted>
+            <source src="scaleRegularizationComparisonBigDatasets.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+
+    <script>
+        function setupComparison(containerId, video1Id, video2Id) {
+            const container = document.getElementById(containerId);
+            const slider = container.querySelector('.slider');
+            const video1 = document.getElementById(video1Id);
+            const video2 = document.getElementById(video2Id);
+
+            let isDragging = false;
+
+            function updateSliderPosition(x) {
+                const rect = container.getBoundingClientRect();
+                let position = (x - rect.left) / rect.width;
+                position = Math.max(0, Math.min(position, 1));
+                
+                slider.style.left = `${position * 100}%`;
+                video1.style.clipPath = `inset(0 ${(1 - position) * 100}% 0 0)`;
+                video2.style.clipPath = `inset(0 0 0 ${position * 100}%)`;
+            }
+
+            slider.addEventListener('mousedown', () => {
+                isDragging = true;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    updateSliderPosition(e.clientX);
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            container.addEventListener('click', (e) => {
+                updateSliderPosition(e.clientX);
+            });
+
+            // Initial slider position
+            updateSliderPosition(container.getBoundingClientRect().left + container.offsetWidth / 2);
+        }
+
+        setupComparison('container3', 'video5', 'video6');
+    </script>
+</body>
+</html>
