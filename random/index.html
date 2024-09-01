@@ -96,23 +96,6 @@
         </div>
     </div>
 
-    <div class="comparison-container">
-        <h2>Scale Regularization Comparison</h2>
-        <p>
-            Both videos are splatfactos trained from 1000 4k images. Using 8 workers with no downscaling in the training process took 23 minutes to train. 
-            The left video has scale regularization (from PhysGaussian) turned off, while the right has scale regularization turned on.
-        </p>
-        <div class="container" id="container3">
-            <video id="video5" autoplay loop muted>
-                <source src="splatfacto-haas_upper_entrance_1k-dataloaded_8workers_noDownscaling.mp4" type="video/mp4">
-            </video>
-            <video id="video6" autoplay loop muted>
-                <source src="splatfacto-haas_upper_entrance_1k-dataloaded_8workers-noDownscaling-scaleRegularization.mp4" type="video/mp4">
-            </video>
-            <div class="slider"></div>
-        </div>
-    </div>
-
     <script>
         function setupComparison(containerId, video1Id, video2Id) {
             const container = document.getElementById(containerId);
@@ -157,7 +140,6 @@
         // Setup both comparisons
         setupComparison('container1', 'video1', 'video2');
         setupComparison('container2', 'video3', 'video4');
-        setupComparison('container3', 'video5', 'video6');
     </script>
 </body>
 </html>
